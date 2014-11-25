@@ -12,13 +12,14 @@ The styling is optional except for the heatmap which requiers a div with a heigh
 3. Call the library, 'v11n.min.js'. Create a new object of visualizepoll, call visualizeChart from the visualizepollobject. The generic form is vistoll.flashChart(urlString,questionIDsArray,divIDString,nameOfChartString,optionsObject)
 
 Example of execution:
-	* var vistool = new visualizepolls();
-	* vistoll.flashChart("http://some.origin/flashpoll",[1],"#container","bar",{axis : false});
+	- **var vistool = new visualizepolls();**
+	- **vistoll.flashChart("http://some.origin/flashpoll",[1],"#container","bar",{axis : false});**
 
 	The call above will load question 1 from a poll at some.origin and create the visualization in the div with the id"#container"
 
 API
 -------
+
 
 Building
 -------

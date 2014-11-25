@@ -8872,9 +8872,9 @@ function stackedBar(options){
 		axis: {
 			rotated : rot,
 			x: {
+				label : options.xlabel,
 				show : options.axis,
 				height: options.legendMargin,
-				// height : 1000,
 				type: 'categorized',
 				tick: {
 					rotate: 75
@@ -8883,7 +8883,7 @@ function stackedBar(options){
 			y : {
 
 				show : options.axis,
-				// label: matrix[0][0]
+				 label: options.ylabel,
 			}
 		},
 		tooltip: {
@@ -9275,12 +9275,12 @@ var colorScale = d3.scale.quantile()
             .style("font-size", fontSize+"px")
             .style("fill","#FF0000")
             .style("font-family","Lato")
-            .style("text-anchor","middle")
+            .style("text-anchor","end")
             .text(options.xlabel)
             .style("font-weight","bold")
            .attr("transform", function(d,i) {    // transform all the text elements
   return "translate(" + // First translate
-  (titleHight/2+ centerPadding) + ","+((h/2)-marginTop)+") " + // Translation params same as your existing x & y 
+  (titleHight/2+ centerPadding) + ","+(marginTop)+") " + // Translation params same as your existing x & y 
     "rotate(-90)"            // THEN rotate them to give a nice slope
 });
 
