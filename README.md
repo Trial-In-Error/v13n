@@ -7,11 +7,15 @@ Example Use
 1. Serve the visualization library with the page:
 `<script src="/some/path/to/v11n.min.js" charset="utf-8"></script>`
 2. Have a div somewhere in the page with an id to load the visualization into. The visualization will be created scaled to the div's size when the library is called.
-`<div id='someUniqueID'></div>`
-3. Call the library. The generic form is maggio.flashpollVis(addressString, questionIndex, divIDString, optionsArray). For example, the below call will load question 0 from a poll at some.origin and create the visualization in the div with id chart1.
-`<script type="text/javascript">
-maggio.flashpollVis("http://some.origin/flashpoll/api/v1/poll/7111bf32-4a8c-40c6-9e2c-b503643", 0, "#chart1",[]);
-</script>`
+`<div id='someUniqueID' style ='height:350px; width:350px;'></div>`
+The styling is optional except for the heatmap which requiers a div with a height;
+3. Call the library, 'v11n.min.js'. Create a new object of visualizepoll, call visualizeChart from the visualizepollobject. The generic form is vistoll.flashChart(urlString,questionIDsArray,divIDString,nameOfChartString,optionsObject)
+
+Example of execution:
+	* var vistool = new visualizepolls();
+	* vistoll.flashChart("http://some.origin/flashpoll",[1],"#container","bar",{axis : false});
+
+	The call above will load question 1 from a poll at some.origin and create the visualization in the div with the id"#container"
 
 API
 -------
