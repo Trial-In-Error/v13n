@@ -32,36 +32,31 @@ Parameters
 2.  Array[int] - containing the id of the questions to visualize
 3. String - the div container id
 4. String -  name of chart function
+...Currently available chart funtion (parameter 4)
+..- bar
+..- pie
+..- lineCat
+..- heatmap
+..- stackedbar
+
+..Only for continuous data (will not work with the example flashpoll data)
+
+..- histogram
+..- scatter 
+..- bubble
+..- line 
+..- regressionline
 5. Object - Object containing options for the chart
+...Add options to chart editing these keys for the options parameter
 
-#####Currently available chart funtion (parameter 4)
-
-- bar
-- pie
-- lineCat
-- heatmap
-- stackedbar
-
-Only for continuous data (will not work with the example flashpoll data)
-
-- histogram
-- scatter 
-- bubble
-- line 
-- regressionline
-
-#####Options
-
-Add options to chart editing these keys for the options parameter
-
-- tooltip : true/false
-- legend : true/false
-- axis : true/false
-- colorscheme : int (0-3) 0:cold, 1: nature, 2: warm, 3: fantasy
-- xlabel : label for x-axis
-- ylabel : label for y-axis
-- interaction :true/false
-- title : String, title of chart
+..- tooltip : true/false
+..- legend : true/false
+..- axis : true/false
+..- colorscheme : int (0-3) 0:cold, 1: nature, 2: warm, 3: fantasy
+..- xlabel : label for x-axis
+..- ylabel : label for y-axis
+..- interaction :true/false
+..- title : String, title of chart
 
 Building
 -------
