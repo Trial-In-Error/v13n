@@ -61,6 +61,7 @@ Add options to chart editing these keys for the options parameter
 - xlabel : label for x-axis
 - ylabel : label for y-axis
 - interaction :true/false
+- title : String, title of chart
 
 Building
 -------

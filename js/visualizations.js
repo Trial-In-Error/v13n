@@ -539,7 +539,6 @@ function line(options){
 *param{Array} matrix - array holding the table
 */
 function scatter(options){
-	console.log(options);
 	var t = new Object();
 	var title = new Object();
 	var names = columnNames(options.matrix);
@@ -1235,7 +1234,7 @@ var colorScale = d3.scale.quantile()
 
 		// var h = $(options.container).parent().width() - ($(options.container).parent().width() - $(options.container).height())
 		// var h =nHeight;
-		var	h = $(options.container).parent().height();
+		var	h = $(options.container).parent().parent().height();
 		var titleHight = getWordWidth2("T") * 3;
 		var topWord = getArrayMaxElement(dim_2,0).trunc(MAXWORDLENGHT);
 		var marginTop = getWordWidth2(topWord);
@@ -1243,7 +1242,7 @@ var colorScale = d3.scale.quantile()
 		var textLength = getWordWidth2(longestElement);
 		// var gridSize = Math.floor((h-marginTop)/(maxSize+2));
 		var gridSize = Math.floor((w-textLength)/(maxSize+2));
-		var gridSize2 = Math.floor((h-marginTop-gridSize*1.5-titleHight)/(maxSize));
+		var gridSize2 = Math.floor((h-marginTop-gridSize*2-titleHight)/(maxSize+2));
 		if(gridSize2<gridSize){
 			gridSize = gridSize2;
 		}

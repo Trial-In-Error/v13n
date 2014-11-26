@@ -12,10 +12,19 @@ this.pointer = 0;
 this.visTypes = null;
 this.addChart = function(container){
 	var c = JSON.parse(JSON.stringify(defaultOptions));
-	// var c = defaultOptions;
-	c.container = container;
-	this.size++;
+	// c.container = container;
 	this.array.push(c);
+	var chartyID = this.chartID + (this.size);
+	visframes.addBasic(container,"item","topid","tumbchart", chartyID);
+	
+	this.array[this.size].container = "#"+chartyID;
+
+	
+	this.size++;
+
+
+
+
 	return this.array.length-1;
 },
 this.updateOption = function(index, opt, value ){
@@ -38,6 +47,14 @@ this.isMobile = function(){
 },
 this.getOption = function(index){
 	return this.array[index];
+}
+this.checkTitle = function(id){
+	console.log("CHECK CHECK");
+	if(this.array[id].title!=null){
+		console.log("ADDING");
+				console.log($(this.array[id].container).parent());
+		$(this.array[id].container).parent().prepend("<h2>"+this.array[id].title+"</h2>");
+	}
 }
 }
 /**
@@ -66,10 +83,10 @@ var defaultOptions = {
 	interaction : true,
 	answer : null,
 	questions : [],
-	title:  "no title",
-	info : "no info about the visualization",
-	title2 : "no title",
-	info2 : "no info about the visualization",
+	title:  null,
+	info : null,
+	title2 : null,
+	info2 : null,
 	norm : false,
 	norm2 : false,
 	correlation : null,

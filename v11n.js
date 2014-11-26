@@ -6391,11 +6391,12 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	var matrix;
 
 	var dt = "frequency";
+
 	ref.optionsdata.addChart(container);
 	if(question.length==1){
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
 		console.log(matrix);
-		// ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel","")
+		ref.optionsdata.updateOption(ref.optionsdata.size-1,"title",structure.questions[question[0]].questionText)
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel","score")
 	}
 	else{
@@ -6421,6 +6422,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
+		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
 		console.log("MATRIX");
 		console.log(matrix);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
@@ -7856,10 +7858,19 @@ this.pointer = 0;
 this.visTypes = null;
 this.addChart = function(container){
 	var c = JSON.parse(JSON.stringify(defaultOptions));
-	// var c = defaultOptions;
-	c.container = container;
-	this.size++;
+	// c.container = container;
 	this.array.push(c);
+	var chartyID = this.chartID + (this.size);
+	visframes.addBasic(container,"item","topid","tumbchart", chartyID);
+	
+	this.array[this.size].container = "#"+chartyID;
+
+	
+	this.size++;
+
+
+
+
 	return this.array.length-1;
 },
 this.updateOption = function(index, opt, value ){
@@ -7882,6 +7893,14 @@ this.isMobile = function(){
 },
 this.getOption = function(index){
 	return this.array[index];
+}
+this.checkTitle = function(id){
+	console.log("CHECK CHECK");
+	if(this.array[id].title!=null){
+		console.log("ADDING");
+				console.log($(this.array[id].container).parent());
+		$(this.array[id].container).parent().prepend("<h2>"+this.array[id].title+"</h2>");
+	}
 }
 }
 /**
@@ -7910,10 +7929,10 @@ var defaultOptions = {
 	interaction : true,
 	answer : null,
 	questions : [],
-	title:  "no title",
-	info : "no info about the visualization",
-	title2 : "no title",
-	info2 : "no info about the visualization",
+	title:  null,
+	info : null,
+	title2 : null,
+	info2 : null,
 	norm : false,
 	norm2 : false,
 	correlation : null,
@@ -7928,13 +7947,10 @@ var visframes = {
 	basicFrame : function(topclass,topid,chartclass,chartid){
 		return $("<div class='"+topclass+"' id='"+topid+"'></div>").append("<div class='"+chartclass+"'' id='"+chartid+"'></div>");
 	},
-	addBasic: function(topclass,topid,chartclass,chartid){
-		if(visframes.container==null){
-			$('#container').append(basicFrame(topclass,topid,chartclass,chartid));
-		}else{
-			console.log(visframes.container);
-			$(visframes.container).append(visframes.basicFrame(topclass,topid,chartclass,chartid));
-		}
+	addBasic: function(container,topclass,topid,chartclass,chartid){
+	
+			$(container).append(visframes.basicFrame(topclass,topid,chartclass,chartid));
+		
 
 	}
 }
@@ -8494,7 +8510,6 @@ function line(options){
 *param{Array} matrix - array holding the table
 */
 function scatter(options){
-	console.log(options);
 	var t = new Object();
 	var title = new Object();
 	var names = columnNames(options.matrix);
@@ -9190,7 +9205,7 @@ var colorScale = d3.scale.quantile()
 
 		// var h = $(options.container).parent().width() - ($(options.container).parent().width() - $(options.container).height())
 		// var h =nHeight;
-		var	h = $(options.container).parent().height();
+		var	h = $(options.container).parent().parent().height();
 		var titleHight = getWordWidth2("T") * 3;
 		var topWord = getArrayMaxElement(dim_2,0).trunc(MAXWORDLENGHT);
 		var marginTop = getWordWidth2(topWord);
@@ -9198,7 +9213,7 @@ var colorScale = d3.scale.quantile()
 		var textLength = getWordWidth2(longestElement);
 		// var gridSize = Math.floor((h-marginTop)/(maxSize+2));
 		var gridSize = Math.floor((w-textLength)/(maxSize+2));
-		var gridSize2 = Math.floor((h-marginTop-gridSize*1.5-titleHight)/(maxSize));
+		var gridSize2 = Math.floor((h-marginTop-gridSize*2-titleHight)/(maxSize+2));
 		if(gridSize2<gridSize){
 			gridSize = gridSize2;
 		}

@@ -73,11 +73,12 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	var matrix;
 
 	var dt = "frequency";
+
 	ref.optionsdata.addChart(container);
 	if(question.length==1){
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
 		console.log(matrix);
-		// ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel","")
+		ref.optionsdata.updateOption(ref.optionsdata.size-1,"title",structure.questions[question[0]].questionText)
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel","score")
 	}
 	else{
@@ -103,6 +104,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
+		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
 		console.log("MATRIX");
 		console.log(matrix);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
