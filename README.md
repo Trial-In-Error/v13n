@@ -24,7 +24,7 @@ API
 
 ###visualizepoll functions
 
-* ####flashChart
+####flashChart
 
 Parameters
 
