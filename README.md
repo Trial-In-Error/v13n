@@ -24,7 +24,7 @@ API
 
 ###visualizepoll functions
 
-**flashChart**
+* ####flashChart
 
 Parameters
 
@@ -42,7 +42,7 @@ Parameters
 - heatmap
 - stackedbar
 
-Only for continuous data
+Only for continuous data (will not work with the example flashpoll data)
 
 - histogram
 - scatter 

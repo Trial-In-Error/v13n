@@ -11,10 +11,10 @@
     var v;
     $( document ).ready(function() {
      v = new visualizepolls();
-     v.flashChart("../data/flashpoll",[0],"#chart1","bar",null);
+     v.flashChart("../data/flashpoll",[0],"#chart1","bar",{color:0});
       v.flashChart("../data/flashpoll",[0],"#chart2","pie",null);
        v.flashChart("../data/flashpoll",[1,2],"#chart3","stackedbar",{xlabel:"new label"});
-          v.flashChart("../data/flashpoll",[1,2],"#chart4","heatmap",null);
+          v.flashChart("../data/flashpoll",[1,2],"#chart4","heatmap",{color:0,title : "this is a heatmap"});
       });
 
 </script>
