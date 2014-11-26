@@ -1,15 +1,16 @@
 var numberText = {
-	hundred : "Hundra",
-	thousand : "K",
-	tenthousand : "10K",
-	hundredthousand : "100K"
+	single : "",
+	hundred : "per hundred",
+	thousand : "per k",
+	tenthousand : "per 10K",
+	hundredthousand : "per 100K"
 }
 
 var textformat = {
 		numberShorten : function(value){
 			var length = value.toString().length;
 			if(value < 100){
-				return [1,numberText.hundred];
+				return [1, numberText.single];
 			}else if(value < 1000){
 				return [100,numberText.hundred];
 			}else if (value < 10000){

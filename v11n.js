@@ -6158,7 +6158,7 @@ var chartNames = {
 	"slidebar" : slideBar,
 	"slidepie" : slidePie,
 	"histogram" : histogram,
-	"tempBar" : tempBar
+	"lineCat" : lineCat
 }
 function getvistypes(cat,con,single){
 	var r = tables.questions[con][cat];
@@ -6421,6 +6421,8 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
+		console.log("MATRIX");
+		console.log(matrix);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 
@@ -8492,7 +8494,7 @@ function line(options){
 *param{Array} matrix - array holding the table
 */
 function scatter(options){
-	optionHandler.pointer = options.id;
+	console.log(options);
 	var t = new Object();
 	var title = new Object();
 	var names = columnNames(options.matrix);
@@ -8506,7 +8508,7 @@ function scatter(options){
 			columns :options.matrix,
 			type: 'scatter',
 			color: function (color, d) {
-				return datacolors.getColor(d,names);
+				return datacolors.getColor(d,names,options);
 			}
 
 		},
@@ -9196,7 +9198,7 @@ var colorScale = d3.scale.quantile()
 		var textLength = getWordWidth2(longestElement);
 		// var gridSize = Math.floor((h-marginTop)/(maxSize+2));
 		var gridSize = Math.floor((w-textLength)/(maxSize+2));
-		var gridSize2 = Math.floor((h-marginTop-gridSize-titleHight)/(maxSize));
+		var gridSize2 = Math.floor((h-marginTop-gridSize*1.5-titleHight)/(maxSize));
 		if(gridSize2<gridSize){
 			gridSize = gridSize2;
 		}
@@ -9379,7 +9381,10 @@ var colorScale = d3.scale.quantile()
            		if(d.value==null){
            		return (d.value/reduceNum).toFixed(1);
            	}
-            return  (d.value/reduceNum).toFixed(1); })
+            if(reduceNum!=1){ return (d.value/reduceNum).toFixed(1);}
+            	else{
+            		return d.value;
+            	} })
            .attr("x", function(d) {return (d.row * gridSize) + textLength + gridSize/2 + centerPadding+ titleHight;  })
            .attr("y", function(d) { ; return d.col * gridSize + marginTop + gridSize/2 + titleHight; })
            .attr("text-anchor","middle")
@@ -9397,7 +9402,7 @@ var colorScale = d3.scale.quantile()
             .attr("y", (rowlength) * (gridSize) + legendWidth + marginTop +titleHight )         
             .style("font-size", fontSize+"px")
             .style("font-family","Lato")
-            .text("Enhet " + valueLabel)
+            .text(valueLabel)
             .style("font-weight","bold");
 
           var ledc=0;
@@ -9507,17 +9512,18 @@ var visualizepolls = function(){
 	}
 }
 var numberText = {
-	hundred : "Hundra",
-	thousand : "K",
-	tenthousand : "10K",
-	hundredthousand : "100K"
+	single : "",
+	hundred : "per hundred",
+	thousand : "per k",
+	tenthousand : "per 10K",
+	hundredthousand : "per 100K"
 }
 
 var textformat = {
 		numberShorten : function(value){
 			var length = value.toString().length;
 			if(value < 100){
-				return [1,numberText.hundred];
+				return [1, numberText.single];
 			}else if(value < 1000){
 				return [100,numberText.hundred];
 			}else if (value < 10000){

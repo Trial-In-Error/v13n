@@ -103,6 +103,8 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
+		console.log("MATRIX");
+		console.log(matrix);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 

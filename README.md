@@ -12,14 +12,53 @@ The styling is optional except for the heatmap which requiers a div with a heigh
 3. Call the library, 'v11n.min.js'. Create a new object of visualizepoll, call visualizeChart from the visualizepollobject. The generic form is vistoll.flashChart(urlString,questionIDsArray,divIDString,nameOfChartString,optionsObject)
 
 Example of execution:
-	- **var vistool = new visualizepolls();**
-	- **vistoll.flashChart("http://some.origin/flashpoll",[1],"#container","bar",{axis : false});**
 
-	The call above will load question 1 from a poll at some.origin and create the visualization in the div with the id"#container"
+	var vistool = new visualizepolls();
+	vistool.flashChart("http://some.origin/flashpoll", [1], "#container",
+    "bar", { axis : false });
+
+The call above will load question 1 from a poll at some.origin and create the visualization in the div with the id "container" and no axes.
 
 API
 -------
 
+###visualizepoll functions
+
+**flashChart**
+
+Parameters
+
+1. String - url to the origin of the three json files, frequency, result and results.
+2.  Array[int] - containing the id of the questions to visualize
+3. String - the div container id
+4. String -  name of chart function
+5. Object - Object containing options for the chart
+
+#####Currently available chart funtion (parameter 4)
+
+- bar
+- pie
+- lineCat
+- heatmap
+- stackedbar
+
+Only for continuous data
+
+- histogram
+- scatter 
+- bubble
+- line 
+- regressionline
+
+#####Options
+
+Add options to chart editing these keys for the options parameter
+
+- tooltip : true/false
+- legend : true/false
+- axis : true/false
+- colorscheme : int (0-3) 0:cold, 1: nature, 2: warm, 3: fantasy
+- 
 
 Building
 -------
