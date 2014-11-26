@@ -19,6 +19,22 @@ Example of execution:
 
 The call above will load question 1 from a poll at some.origin and create the visualization in the div with the id "container" and no axes.
 
+Notes
+* the tool uses the score from the pool, so it cannot handle free text
+* a maximum of two questions can be combined
+* if two questions of the type radio (one choice) are combined each pair will get the score of one. This will simply show the frequency of the choice Ad and Bc
+* if two questions of the type ORDER (multiple choices) each pair will contain the sum of the score.
+* if one of the qustion is of the type ORDER then each pair will be the sum of the order score. 
+	Example: 
+	Choose a,b or c -> a
+	Order d,e or f -> 2,1,3
+
+	dataoutput
+	  a b c
+	d 2 0 0 
+	e 1 0 0
+	f 3 0 0
+
 API
 -------
 ###visualizepoll functions

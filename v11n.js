@@ -6488,22 +6488,30 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		var header = [];
 		header.push(structure.title);
 		var side = [];
+		var first,second;
+
 		for (var i = 0; i < structure.questions.length; i++) {
 
 			if(structure.questions[i].orderId==ids[0]){
-				console.log(structure.questions[i]);
+				first = structure.questions[i].questionType;
 				rows = structure.questions[i].answers.length;
 				for (var y = 0; y < structure.questions[i].answers.length; y++) {
 					header.push(structure.questions[i].answers[y].answerText);
 				};
 			}
 			if(structure.questions[i].orderId==ids[1]){
+				second = structure.questions[i].questionType;
 				columns = structure.questions[i].answers.length;
 				for (var y = 0; y < structure.questions[i].answers.length; y++) {
 					side.push(structure.questions[i].answers[y].answerText);
 				};
 			}
 		};
+		var isOrdnial = flashpoll.checkOrdinal(first, second);
+
+		if(isOrdnial == 0){
+			return;
+		}
 		var matrix = buildEmptyMatrix(rows,columns);
 		//For each user
 		data.forEach(function(d){
@@ -6515,7 +6523,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 					for (var j = 0; j< d.pollResQuestions[i].pollResultAnswers.length; j++) {
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
-						
+						console.log(d.pollResQuestions[i].pollResultAnswers[j]);
 						for (var u = 0; u < columns; u++){
 							matrix[answerOrder][u] = score;
 						};
@@ -6523,23 +6531,45 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 				};
 				if(d.pollResQuestions[i].questionOrderId==ids[1]){
 					for (var j = 0; j< d.pollResQuestions[j].pollResultAnswers.length; j++) {
-							var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;
+						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;		
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
-						for (var u = 0; u < matrix[0].length; u++){
-							matrix[u][answerOrder] = flashpoll.merge(matrix[u][answerOrder],score);
+						for (var u = 0; u < matrix.length; u++){
+							//If not out of bounds
+							if(u<rows && j<columns){
+								if(isOrdnial == 1){
+									matrix[answerOrder][u] += flashpoll.merge(matrix[answerOrder][u],score);
+								}else if(isOrdnial == 2){
+									matrix[answerOrder][u] += matrix[answerOrder][u] * score;
+								}else if(isOrdnial == -1 && matrix[answerOrder][u] * score > 0){
+									matrix[answerOrder][u] ++;
+								}
+									
+							}
+						
 						};
 					}
 
 				};
 			}
 		});
-	addSideNames(matrix,side);
-	matrix.unshift(header);
+	addSideNames(matrix,header);
+	matrix.unshift(side);
 	return matrix;
 	},
 	merge : function(q1,q2){
 	return q1 + q2;
-}
+},
+	checkOrdinal : function(type1, type2){
+		if(type1 == "FREETEXT" || type2 == "FREETEXT"){
+			return 0;
+		}else if(type1 == "ORDER" && type2 == "ORDER"){
+			return 1;
+		}else if(type1 == "ORDER" || type2 == "ORDER"){
+			return 2;
+		}else{
+			return -1;
+		}
+	}
 }
 
 
