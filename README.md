@@ -58,7 +58,9 @@ Add options to chart editing these keys for the options parameter
 - legend : true/false
 - axis : true/false
 - colorscheme : int (0-3) 0:cold, 1: nature, 2: warm, 3: fantasy
-- 
+- xlabel : label for x-axis
+- ylabel : label for y-axis
+- interaction :true/false
 
 Building
 -------
