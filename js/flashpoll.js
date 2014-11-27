@@ -215,15 +215,15 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 					for (var j = 0; j< d.pollResQuestions[j].pollResultAnswers.length; j++) {
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;		
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
-						for (var u = 0; u < matrix.length; u++){
+						for (var u = 0; u < rows; u++){
 							//If not out of bounds
 							if(u<rows && j<columns){
 								if(isOrdnial == 1){
-									matrix[answerOrder][u] += flashpoll.merge(matrix[answerOrder][u],score);
+									matrix[u][answerOrder] += flashpoll.merge(matrix[u][answerOrder],score);
 								}else if(isOrdnial == 2){
-									matrix[answerOrder][u] += matrix[answerOrder][u] * score;
-								}else if(isOrdnial == -1 && matrix[answerOrder][u] * score > 0){
-									matrix[answerOrder][u] ++;
+									matrix[u][answerOrder] += matrix[u][answerOrder] * score;
+								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
+									matrix[u][answerOrder] ++;
 								}
 									
 							}
