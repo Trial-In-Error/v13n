@@ -70,6 +70,10 @@ Parameters
         * ylabel : label for y-axis
         * interaction :true/false
         * title : String, title of chart
+        * transformation : 
+        	- "swap" switch place of datasets
+        	- "p1" normalize question 1
+        	- "p2" normalize question 2
 
 Building
 -------
