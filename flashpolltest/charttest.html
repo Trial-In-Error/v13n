@@ -11,7 +11,7 @@
     var v;
     $( document ).ready(function() {
      v = new visualizepolls();
-     v.flashChart("../data/flashpoll",[0],"#chart1","bar",{color:0,title : "barchart question id 0"});
+     v.flashChart("../data/flashpoll",[0],"#chart1","bar",{color:0,title : "barchart question id 0", transformation:"swap"});
      v.flashChart("../data/flashpoll",[1],"#chart2","bar",{color:1,title : "barchart question id 1"});
      v.flashChart("../data/flashpoll",[2],"#chart3","bar",{color:2,title : "barchart question id 2"});
 
@@ -23,8 +23,8 @@
     v.flashChart("../data/flashpoll",[1,2],"#chart8","bar",{color:2,title : "grouped bar question id 1,2"});
     v.flashChart("../data/flashpoll",[2,0],"#chart9","bar",{color:3,title : "grouped bar question id 2,0"});
 
-    v.flashChart("../data/flashpoll",[0,1],"#chart10","stackedbar",{color:0,title : "stackedbar question id 0,1"});
-    v.flashChart("../data/flashpoll",[1,2],"#chart11","stackedbar",{color:2,title : "stackedbar question id 1,2"});
+    v.flashChart("../data/flashpoll",[0,1],"#chart10","stackedbar",{color:0,title : "stackedbar question id 0,1", transformation : "p1"});
+    v.flashChart("../data/flashpoll",[1,2],"#chart11","stackedbar",{color:2,title : "stackedbar question id 1,2", transformation : "p2"});
     v.flashChart("../data/flashpoll",[2,0],"#chart12","stackedbar",{color:0,title : "stackedbar question id 2,0"});
 
     v.flashChart("../data/flashpoll",[0,1],"#chart13","heatmap",{color:0,title : "heatmap question id 0,1"});

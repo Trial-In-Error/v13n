@@ -95,6 +95,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 			ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(20))
 		}
 		
+		matrix = transformation(matrix, options.transformation);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1)

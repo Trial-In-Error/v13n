@@ -6413,6 +6413,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 			ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(20))
 		}
 		
+		matrix = transformation(matrix, options.transformation);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1)
@@ -6717,6 +6718,12 @@ function functionName(fun) {
   ret = ret.substr(0, ret.indexOf('('));
   return ret;
 }
+
+function transformation(matrix,trans){
+	if(trans == "swap"){
+		
+	}
+}
 function matrixToRevArray(matrix){
 	var ret = [];
 	for (var i = 0; i < matrix.length; i++) {
@@ -7017,6 +7024,24 @@ function addToSideHeader(matrix,add){
 		matrix[i][0]+=add;
 	} 
 		return matrix;
+}
+
+function transformation(matrix,trans){
+
+	if(trans == null){
+		return matrix;
+	}
+
+	var m = copyMatrix(matrix);
+
+	if(trans == "swap"){
+		m = swapCategorical(m);
+	}else if(trans == "p1"){
+		m = normalizeColumns(m);
+	}else if(trans == "p2"){
+		m = normalizeByRow(m);
+	}
+	return m;
 }
 function createSlider(){
 	var slider = "<div><input id='sliderb' type='range' min='1' max='"+ matrix.length + "' value='1'/></div>";
@@ -7959,6 +7984,7 @@ var defaultOptions = {
 	visualization: null,
 	color:0,
 	interaction : true,
+	transformation : null,
 	answer : null,
 	questions : [],
 	title:  null,

@@ -303,7 +303,7 @@ function addToSideHeader(matrix,add){
 function transformation(matrix,trans){
 
 	if(trans == null){
-		return null;
+		return matrix;
 	}
 
 	var m = copyMatrix(matrix);
@@ -315,3 +315,5 @@ function transformation(matrix,trans){
 	}else if(trans == "p2"){
 		m = normalizeByRow(m);
 	}
+	return m;
+}
