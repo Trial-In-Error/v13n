@@ -3,15 +3,15 @@
 * updating and adding options
 */
 var optionHandler = function(){
-this.myDefault = null;
-this.chartOptions = null;
-this.chartID = "charty";
-this.array = [];
-this.size = 0;
-this.pointer = 0;
-this.visTypes = null;
-this.addChart = function(container){
-	var c = JSON.parse(JSON.stringify(defaultOptions));
+	this.myDefault = null;
+	this.chartOptions = null;
+	this.chartID = "charty";
+	this.array = [];
+	this.size = 0;
+	this.pointer = 0;
+	this.visTypes = null;
+	this.addChart = function(container){
+		var c = JSON.parse(JSON.stringify(defaultOptions));
 	// c.container = container;
 	this.array.push(c);
 	var chartyID = this.chartID + (this.size);
@@ -29,6 +29,12 @@ this.addGridChart = function(container){
 },
 this.updateOption = function(index, opt, value ){
 	this.array[index][opt] = value;
+},
+this.addChartOptions = function(index,value){
+	for(key in value){
+		this.array[index].chartOptions[key] = value[key];
+	}
+
 },
 this.addOptions = function(id,options){
 /*	if(this.myDefault ==null){
@@ -52,9 +58,20 @@ this.checkTitle = function(id){
 	console.log("CHECK CHECK");
 	if(this.array[id].title!=null){
 		console.log("ADDING");
-				console.log($(this.array[id].container).parent());
-		$(this.array[id].container).parent().prepend("<h2>"+this.array[id].title+"</h2>");
+		console.log($(this.array[id].container).parent());
+		var title = $(this.array[id].container).parent().prepend("<h2 id=charttitle"+id+">"+this.array[id].title+"</h2>");
+		console.log($("charttitle"+id).height());
+		this.array[id].chartOptions.size.height-=$("charttitle"+id).height();
 	}
+};
+this.setSize = function(id){
+	var width = $(this.array[id].container).parent().parent().width();
+	var height = $(this.array[id].container).parent().parent().height();
+	this.array[id].chartOptions.size = 
+	{
+		width : width,
+		height : height
+	};
 }
 }
 /**
@@ -66,7 +83,7 @@ var defaultOptions = {
 	classname : null,
 	chart : null,
 	id: null,
-	chartOptions : null,
+	chartOptions : {},
 	container: null,
 	orgmatrix : null,
 	matrix: null,

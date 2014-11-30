@@ -33,7 +33,8 @@ var chartNames = {
 	"slidebar" : slideBar,
 	"slidepie" : slidePie,
 	"histogram" : histogram,
-	"lineCat" : lineCat
+	"lineCat" : lineCat,
+	"donut" : donut,
 }
 function getvistypes(cat,con,single){
 	var r = tables.questions[con][cat];

@@ -74,6 +74,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	var dt = "frequency";
 
 	ref.optionsdata.addChart(container);
+
 	if(question.length==1){
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
 		console.log(matrix);
@@ -91,12 +92,14 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 				subtitle += structure.questions[question[i]].questionText;
 				subtitle += "<br/>"
 			}
-			ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(20))
-			ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(20))
+			ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
+			ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
 		}
 		
 		matrix = transformation(matrix, options.transformation);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
+
+
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1)
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"id",optionHandler.size-1)
@@ -104,9 +107,11 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
-		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
-		console.log("MATRIX");
-		console.log(matrix);
+		
+
+		// ref.optionsdata.array[ref.optionsdata.size-1].chartOptions =  options.chartOptions;
+			ref.optionsdata.setSize(ref.optionsdata.size-1);
+			ref.optionsdata.checkTitle(ref.optionsdata.size-1);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 
