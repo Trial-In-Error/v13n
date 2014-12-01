@@ -860,10 +860,10 @@ function bubble(options){
 return chart;
 }
 
-function slideBar(matrix){
+function slideBar(options){
 	createSlider();
 	var settings = {
-		bindto: "#"+pollchart.chart[pollchart.nrOfCharts-1],
+		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
 			x : header[0],
@@ -893,26 +893,19 @@ function slideBar(matrix){
 	var chart = c3.generate(settings);
 	return chart;
 }
-function slidePie(matrix){
-	createSlider();
-	// matrix.unshift(header);
+function sliderDonut(options){
+	// createSlider(options.container,options.id,4);
 	var settings = {
-		bindto: "#"+pollchart.chart[pollchart.nrOfCharts-1],
+		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
-			x : header[0],
-			rows : [header,matrix[0]],
-			type: 'pie',
+			x: options.matrix[0][0],
+			columns : options.matrix,
+			type: 'donut',
 
 		},
-		tooltip: {
-			show : pollchart.options.tooltip
-		},
-		legend : {
-			show : pollchart.options.legend
-		},
 		donut: {
-			title: function(){return matrix[1][0];}
+			title: function(){return options.xlabel}
 		},
 		axis: {
 			x: {

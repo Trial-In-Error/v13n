@@ -3,6 +3,7 @@
 * updating and adding options
 */
 var optionHandler = function(){
+	this.questionsMatrix  = [];
 	this.myDefault = null;
 	this.chartOptions = null;
 	this.chartID = "charty";
@@ -55,13 +56,9 @@ this.getOption = function(index){
 	return this.array[index];
 }
 this.checkTitle = function(id){
-	console.log("CHECK CHECK");
 	if(this.array[id].title!=null){
-		console.log("ADDING");
-		console.log($(this.array[id].container).parent());
 		var title = $(this.array[id].container).parent().prepend("<h2 id=charttitle"+id+">"+this.array[id].title+"</h2>");
-		console.log($("charttitle"+id).height());
-		this.array[id].chartOptions.size.height-=$("charttitle"+id).height();
+		this.array[id].chartOptions.size.height-=$("#charttitle"+id).height();
 	}
 };
 this.setSize = function(id){

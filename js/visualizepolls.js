@@ -12,21 +12,22 @@ var visualizeFlashPoll = function(){
 		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password) + "==")
 		.get(function(error,structure) {
 
-			
+
 			/*d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
 			.get(function(error,data) {
 				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
 				.get(function(error,frequency) {
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);*/
 		/*		});
-			});*/
-		});
+	});*/
+	});
 	}
 	this.initlocal = function(url,callback){
 		this.flashdata = new flashdata();
 		this.flashdata.seturl(url);
 		var self = this;
 		this.flashdata.getDataLocal(function(){
+			flashpoll.setDataArray(self.flashdata.structure,self.flashdata.frequency,self.optionsdata);
 			callback();
 
 		});
@@ -38,6 +39,7 @@ var visualizeFlashPoll = function(){
 				d3.json(url+"result.json", function(frequency) {
 					console.log(data);
 					console.log(frequency);
+					flashpoll.setDataArray(self,structure,frequency,options);
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
 				});
 			});
@@ -66,7 +68,29 @@ var visualizeFlashPoll = function(){
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
 
 				});
-			});*/
-		});
+	});*/
+	});
+	}
+	this.quickOverview = function(container,options){
+		var q = 0;
+		while(this.flashdata.structure.questions[q].questionType == "FREETEXT"){
+			q = (q+1)%this.flashdata.structure.questions.length;
+		}
+		options.xlabel = "question " + this.flashdata.structure.questions[q].orderId;
+		var link = this;
+		flashpoll.visualizeChart(this,this.flashdata.structure,this.flashdata.data,this.flashdata.frequency,[this.flashdata.structure.questions[q].orderId],"sliderdonut",container,options);
+		setInterval(function () {
+			$(container).empty();
+
+				q = (q+1)%link.flashdata.structure.questions.length;
+			while(link.flashdata.structure.questions[q].questionType == "FREETEXT"){
+				q = (q+1)%link.flashdata.structure.questions.length;
+			}
+			console.log("THIS IS THE QUESTIONTYPE");
+		console.log(link.flashdata.structure.questions[q].questionType);
+		
+			options.xlabel = "question " + link.flashdata.structure.questions[q].orderId;
+			flashpoll.visualizeChart(link,link.flashdata.structure,link.flashdata.data,link.flashdata.frequency,[link.flashdata.structure.questions[q].orderId],"sliderdonut",container,options);
+		}, 2000);
 	}
 }

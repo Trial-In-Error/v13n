@@ -2,6 +2,16 @@
 *	flashpoll handles fetching and parsing data from flashpoll
 */
 var flashpoll = {
+	setDataArray : function(structure,frequency,options){
+		console.log(structure.questions[0].orderId);
+		for(var i = 0; i < structure.questions.length; i++){
+			if(structure.questions[i].questionType != "FREETEXT"){
+				options.questionsMatrix.push(
+					flashpoll.getSingleMatrix(structure,frequency,structure.questions[i].orderId)
+					);
+			}
+		}
+	},
 	visualizeSet : function (structure,data,frequency,questions,options){
 		//functions + questions
 		var visualizationTypes = flashpoll.calculateVisualizations(structure,data,questions,false);
@@ -46,10 +56,10 @@ var flashpoll = {
 					pollchart.optionChart.push(variable);
 					pollchart.chartVis.push( functionName(visualizationTypes[i].types[u]));
 					pollchart.currentCharts[pollchart.chart[pollchart.nrOfCharts-1]] = {chart : [i,u], data : data, question : questions};
-						var cont = "#"+pollchart.chart[pollchart.nrOfCharts-1];	
-						var op = options;
-						op.matrix = matrix;
-						op.container = cont;
+					var cont = "#"+pollchart.chart[pollchart.nrOfCharts-1];	
+					var op = options;
+					op.matrix = matrix;
+					op.container = cont;
 					visualizationTypes[i].types[u](op);
 					// addInfo();					
 					// pollchart.currentCharts[pollchart.chart[pollchart.nrOfCharts-1]] = {chart : [i,u,], data : data, question : question};
@@ -58,7 +68,7 @@ var flashpoll = {
 			}
 
 		}
-			console.log(pollchart.chartVis);
+		console.log(pollchart.chartVis);
 		// console.log(pollchart.optionChart);
 		new Masonry(container, { "columnWidth": ".tumbchart", "itemSelector": ".tumbchart", "gutter": ".gutter-sizer" })
 	},
@@ -77,41 +87,39 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 
 	if(question.length==1){
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
-		console.log(matrix);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"title",structure.questions[question[0]].questionText)
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel","score")
 	}
 	else{
-			var matrix=flashpoll.getDoubleMatrix(structure,data,question);
-					if(matrix==null){
-						return;
-					}
-			var subtitle = "";
-			for(i=0; i<question.length; i++){
-				subtitle += "-";
-				subtitle += structure.questions[question[i]].questionText;
-				subtitle += "<br/>"
-			}
-			ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
-			ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
+		var matrix=flashpoll.getDoubleMatrix(structure,data,question);
+		if(matrix==null){
+			return;
 		}
-		
-		matrix = transformation(matrix, options.transformation);
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
+		var subtitle = "";
+		for(i=0; i<question.length; i++){
+			subtitle += "-";
+			subtitle += structure.questions[question[i]].questionText;
+			subtitle += "<br/>"
+		}
+		ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
+		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
+	}
+	matrix = transformation(matrix, options.transformation);
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
 
 
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1)
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"id",optionHandler.size-1)
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1);
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"id",ref.optionsdata.size-1);
 		// ref.optionsdata.updateOption(ref.optionsdata.size-1,"answer",answer)
-	
+
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
 		
 
 		// ref.optionsdata.array[ref.optionsdata.size-1].chartOptions =  options.chartOptions;
-			ref.optionsdata.setSize(ref.optionsdata.size-1);
-			ref.optionsdata.checkTitle(ref.optionsdata.size-1);
+		ref.optionsdata.setSize(ref.optionsdata.size-1);
+		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 
@@ -120,7 +128,6 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 
 	calculateVisualizations : function(structure,data,q,single){
 		var array = structure.questions;
-		console.log(structure.questions);
 		var combinations =[];
 		for (var i = 0; i < q.length; i++) {
 			if(array[q[i]].questionType=="FREETEXT"){
@@ -232,38 +239,38 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
 									matrix[u][answerOrder] += flashpoll.mergeNominal(matrix[u][answerOrder],score);
 								}
-									
+
 							}
-						
+
 						};
 					}
 
 				};
 			}
 		});
-	addSideNames(matrix,header);
-	matrix.unshift(side);
-	return matrix;
-	},
-	mergeOrder : function(q1,q2){
+addSideNames(matrix,header);
+matrix.unshift(side);
+return matrix;
+},
+mergeOrder : function(q1,q2){
 	return q1 + q2;
 },
-	mergeOneOrder : function(q1,q2){
+mergeOneOrder : function(q1,q2){
 	return q1 * q2;
 },
-	mergeNominal : function(q1,q2){
+mergeNominal : function(q1,q2){
 	return 1;
 },
-	checkOrdinal : function(type1, type2){
-		if(type1 == "FREETEXT" || type2 == "FREETEXT"){
-			return 0;
-		}else if(type1 == "ORDER" && type2 == "ORDER"){
-			return 1;
-		}else if(type1 == "ORDER" || type2 == "ORDER"){
-			return 2;
-		}else{
-			return -1;
-		}
+checkOrdinal : function(type1, type2){
+	if(type1 == "FREETEXT" || type2 == "FREETEXT"){
+		return 0;
+	}else if(type1 == "ORDER" && type2 == "ORDER"){
+		return 1;
+	}else if(type1 == "ORDER" || type2 == "ORDER"){
+		return 2;
+	}else{
+		return -1;
 	}
+}
 }
 

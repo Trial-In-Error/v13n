@@ -6155,11 +6155,10 @@ var chartNames = {
 	"stackedbar"  : stackedBar,
 	"bubble" : bubble,
 	"heatmap" : heatmap2,
-	"slidebar" : slideBar,
-	"slidepie" : slidePie,
 	"histogram" : histogram,
 	"lineCat" : lineCat,
 	"donut" : donut,
+	"sliderdonut" : sliderDonut,
 }
 function getvistypes(cat,con,single){
 	var r = tables.questions[con][cat];
@@ -6343,6 +6342,16 @@ var flashdata = function(){
 *	flashpoll handles fetching and parsing data from flashpoll
 */
 var flashpoll = {
+	setDataArray : function(structure,frequency,options){
+		console.log(structure.questions[0].orderId);
+		for(var i = 0; i < structure.questions.length; i++){
+			if(structure.questions[i].questionType != "FREETEXT"){
+				options.questionsMatrix.push(
+					flashpoll.getSingleMatrix(structure,frequency,structure.questions[i].orderId)
+					);
+			}
+		}
+	},
 	visualizeSet : function (structure,data,frequency,questions,options){
 		//functions + questions
 		var visualizationTypes = flashpoll.calculateVisualizations(structure,data,questions,false);
@@ -6387,10 +6396,10 @@ var flashpoll = {
 					pollchart.optionChart.push(variable);
 					pollchart.chartVis.push( functionName(visualizationTypes[i].types[u]));
 					pollchart.currentCharts[pollchart.chart[pollchart.nrOfCharts-1]] = {chart : [i,u], data : data, question : questions};
-						var cont = "#"+pollchart.chart[pollchart.nrOfCharts-1];	
-						var op = options;
-						op.matrix = matrix;
-						op.container = cont;
+					var cont = "#"+pollchart.chart[pollchart.nrOfCharts-1];	
+					var op = options;
+					op.matrix = matrix;
+					op.container = cont;
 					visualizationTypes[i].types[u](op);
 					// addInfo();					
 					// pollchart.currentCharts[pollchart.chart[pollchart.nrOfCharts-1]] = {chart : [i,u,], data : data, question : question};
@@ -6399,7 +6408,7 @@ var flashpoll = {
 			}
 
 		}
-			console.log(pollchart.chartVis);
+		console.log(pollchart.chartVis);
 		// console.log(pollchart.optionChart);
 		new Masonry(container, { "columnWidth": ".tumbchart", "itemSelector": ".tumbchart", "gutter": ".gutter-sizer" })
 	},
@@ -6418,41 +6427,39 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 
 	if(question.length==1){
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
-		console.log(matrix);
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"title",structure.questions[question[0]].questionText)
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel","score")
 	}
 	else{
-			var matrix=flashpoll.getDoubleMatrix(structure,data,question);
-					if(matrix==null){
-						return;
-					}
-			var subtitle = "";
-			for(i=0; i<question.length; i++){
-				subtitle += "-";
-				subtitle += structure.questions[question[i]].questionText;
-				subtitle += "<br/>"
-			}
-			ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
-			ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
+		var matrix=flashpoll.getDoubleMatrix(structure,data,question);
+		if(matrix==null){
+			return;
 		}
-		
-		matrix = transformation(matrix, options.transformation);
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
+		var subtitle = "";
+		for(i=0; i<question.length; i++){
+			subtitle += "-";
+			subtitle += structure.questions[question[i]].questionText;
+			subtitle += "<br/>"
+		}
+		ref.optionsdata.updateOption(ref.optionsdata.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
+		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
+	}
+	matrix = transformation(matrix, options.transformation);
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"matrix",matrix);
 
 
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1)
-		ref.optionsdata.updateOption(ref.optionsdata.size-1,"id",optionHandler.size-1)
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"chart",chartNames[chart]);
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"color",1);
+	ref.optionsdata.updateOption(ref.optionsdata.size-1,"id",ref.optionsdata.size-1);
 		// ref.optionsdata.updateOption(ref.optionsdata.size-1,"answer",answer)
-	
+
 		ref.optionsdata.pointer = ref.optionsdata.size-1;
 		ref.optionsdata.array[ref.optionsdata.size-1] = visGenerator.addOptions(ref.optionsdata.array[ref.optionsdata.size-1],options);
 		
 
 		// ref.optionsdata.array[ref.optionsdata.size-1].chartOptions =  options.chartOptions;
-			ref.optionsdata.setSize(ref.optionsdata.size-1);
-			ref.optionsdata.checkTitle(ref.optionsdata.size-1);
+		ref.optionsdata.setSize(ref.optionsdata.size-1);
+		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 
@@ -6461,7 +6468,6 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 
 	calculateVisualizations : function(structure,data,q,single){
 		var array = structure.questions;
-		console.log(structure.questions);
 		var combinations =[];
 		for (var i = 0; i < q.length; i++) {
 			if(array[q[i]].questionType=="FREETEXT"){
@@ -6573,39 +6579,39 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
 									matrix[u][answerOrder] += flashpoll.mergeNominal(matrix[u][answerOrder],score);
 								}
-									
+
 							}
-						
+
 						};
 					}
 
 				};
 			}
 		});
-	addSideNames(matrix,header);
-	matrix.unshift(side);
-	return matrix;
-	},
-	mergeOrder : function(q1,q2){
+addSideNames(matrix,header);
+matrix.unshift(side);
+return matrix;
+},
+mergeOrder : function(q1,q2){
 	return q1 + q2;
 },
-	mergeOneOrder : function(q1,q2){
+mergeOneOrder : function(q1,q2){
 	return q1 * q2;
 },
-	mergeNominal : function(q1,q2){
+mergeNominal : function(q1,q2){
 	return 1;
 },
-	checkOrdinal : function(type1, type2){
-		if(type1 == "FREETEXT" || type2 == "FREETEXT"){
-			return 0;
-		}else if(type1 == "ORDER" && type2 == "ORDER"){
-			return 1;
-		}else if(type1 == "ORDER" || type2 == "ORDER"){
-			return 2;
-		}else{
-			return -1;
-		}
+checkOrdinal : function(type1, type2){
+	if(type1 == "FREETEXT" || type2 == "FREETEXT"){
+		return 0;
+	}else if(type1 == "ORDER" && type2 == "ORDER"){
+		return 1;
+	}else if(type1 == "ORDER" || type2 == "ORDER"){
+		return 2;
+	}else{
+		return -1;
 	}
+}
 }
 
 
@@ -7078,14 +7084,17 @@ function transformation(matrix,trans){
 	}
 	return m;
 }
-function createSlider(){
-	var slider = "<div><input id='sliderb' type='range' min='1' max='"+ matrix.length + "' value='1'/></div>";
-	var label = "<label id='sliderLabel' for='male'>"+ "Current plot: " + getMytitle() + "</label>";
-	$('#slideholder').append(label);
-	$('#slideholder').append(slider);
-	$("#slideholder").trigger("create");
-	$("#sliderb").on("slidestop", function(e){
-		setBarSet($("#sliderb").val(),matrix);
+function createSlider(container,id,length){
+	var label = '<label for="sliderdonu'+id+'">Input slider:</label>'
+	var slider = '<input type="range" name="slider" id="sliderdonu'+id+'" value="1" min="1" max="'+ length +'" data-highlight="true" />'
+	// var slider = "<div><input id='sliderdonut"+id+"' type='range' min='1' max='"+ length +"' value='1'/></div>";
+	// var label = "<label id='sliderLabel' for='male'>"+ "Current plot: " + getMytitle() + "</label>";
+	$(container).parent().append(label);
+	$(container).parent().append(slider);
+	$(container).trigger("create");
+	$("#sliderdonut" + id).on("slidestop", function(e){
+		console.log("SLIDE");
+		// setBarSet($("#sliderb").val(),matrix);
 	});
 }
 /**
@@ -7941,6 +7950,7 @@ getMixedMatrix : function(data,visualizationTypes){
 * updating and adding options
 */
 var optionHandler = function(){
+	this.questionsMatrix  = [];
 	this.myDefault = null;
 	this.chartOptions = null;
 	this.chartID = "charty";
@@ -7993,13 +8003,9 @@ this.getOption = function(index){
 	return this.array[index];
 }
 this.checkTitle = function(id){
-	console.log("CHECK CHECK");
 	if(this.array[id].title!=null){
-		console.log("ADDING");
-		console.log($(this.array[id].container).parent());
 		var title = $(this.array[id].container).parent().prepend("<h2 id=charttitle"+id+">"+this.array[id].title+"</h2>");
-		console.log($("charttitle"+id).height());
-		this.array[id].chartOptions.size.height-=$("charttitle"+id).height();
+		this.array[id].chartOptions.size.height-=$("#charttitle"+id).height();
 	}
 };
 this.setSize = function(id){
@@ -9499,10 +9505,10 @@ function bubble(options){
 return chart;
 }
 
-function slideBar(matrix){
+function slideBar(options){
 	createSlider();
 	var settings = {
-		bindto: "#"+pollchart.chart[pollchart.nrOfCharts-1],
+		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
 			x : header[0],
@@ -9532,26 +9538,19 @@ function slideBar(matrix){
 	var chart = c3.generate(settings);
 	return chart;
 }
-function slidePie(matrix){
-	createSlider();
-	// matrix.unshift(header);
+function sliderDonut(options){
+	// createSlider(options.container,options.id,4);
 	var settings = {
-		bindto: "#"+pollchart.chart[pollchart.nrOfCharts-1],
+		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
-			x : header[0],
-			rows : [header,matrix[0]],
-			type: 'pie',
+			x: options.matrix[0][0],
+			columns : options.matrix,
+			type: 'donut',
 
 		},
-		tooltip: {
-			show : pollchart.options.tooltip
-		},
-		legend : {
-			show : pollchart.options.legend
-		},
 		donut: {
-			title: function(){return matrix[1][0];}
+			title: function(){return options.xlabel}
 		},
 		axis: {
 			x: {
@@ -10027,21 +10026,22 @@ var visualizeFlashPoll = function(){
 		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password) + "==")
 		.get(function(error,structure) {
 
-			
+
 			/*d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
 			.get(function(error,data) {
 				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
 				.get(function(error,frequency) {
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);*/
 		/*		});
-			});*/
-		});
+	});*/
+	});
 	}
 	this.initlocal = function(url,callback){
 		this.flashdata = new flashdata();
 		this.flashdata.seturl(url);
 		var self = this;
 		this.flashdata.getDataLocal(function(){
+			flashpoll.setDataArray(self.flashdata.structure,self.flashdata.frequency,self.optionsdata);
 			callback();
 
 		});
@@ -10053,6 +10053,7 @@ var visualizeFlashPoll = function(){
 				d3.json(url+"result.json", function(frequency) {
 					console.log(data);
 					console.log(frequency);
+					flashpoll.setDataArray(self,structure,frequency,options);
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
 				});
 			});
@@ -10081,8 +10082,30 @@ var visualizeFlashPoll = function(){
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
 
 				});
-			});*/
-		});
+	});*/
+	});
+	}
+	this.pollAnswerDistribution = function(container,chart,options){
+		var q = 0;
+		while(this.flashdata.structure.questions[q].questionType == "FREETEXT"){
+			q = (q+1)%this.flashdata.structure.questions.length;
+		}
+		options.xlabel = "question " + this.flashdata.structure.questions[q].orderId;
+		var link = this;
+		flashpoll.visualizeChart(this,this.flashdata.structure,this.flashdata.data,this.flashdata.frequency,[this.flashdata.structure.questions[q].orderId],"sliderdonut",container,options);
+		setInterval(function () {
+			$(container).empty();
+
+				q = (q+1)%link.flashdata.structure.questions.length;
+			while(link.flashdata.structure.questions[q].questionType == "FREETEXT"){
+				q = (q+1)%link.flashdata.structure.questions.length;
+			}
+			console.log("THIS IS THE QUESTIONTYPE");
+		console.log(link.flashdata.structure.questions[q].questionType);
+		
+			options.xlabel = "question " + link.flashdata.structure.questions[q].orderId;
+			flashpoll.visualizeChart(link,link.flashdata.structure,link.flashdata.data,link.flashdata.frequency,[link.flashdata.structure.questions[q].orderId],"sliderdonut",container,options);
+		}, 2000);
 	}
 }
 var numberText = {

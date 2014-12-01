@@ -113,6 +113,11 @@ Must be executed inside visualizeFlashPoll callback to be executed.
             - "p1" normalize question 1
             - "p2" normalize question 2
 
+####quickOverview(container, options)
+Slideshow over the answer distribution of all the questions. This method must be executed inside the init callback.
+
+1. String - the div container id
+2.  Object - Object containing options for the chart (same as above)
 Building
 -------
 Building this library requires node and grunt. To build it, navigate to the project directory and type `npm install` to install the grunt packages needed. Then, type `grunt` or `grunt human` to produce a human-readable version of the library, or `grunt dist` to produce a minified, mangled version suitable for a production environment. The files are named `v11n.js` and `v11n.min.js` respectively, and are created at the project's top level. There are two css files in ./css/ that should also be served. All of the other files present in the repository are for development / testing.
@@ -135,7 +140,6 @@ flashpoll.mergeOrder, flashpoll.mergeOneOrder and flashpoll.mergeNominal
 Example how to change
 
     flashpoll.mergeOneOrder = function(a,b){
-    console.log("NEW FUNC");
       return 0;};
 
 
