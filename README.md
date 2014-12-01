@@ -80,7 +80,7 @@ Loads data and then executes the callback
 1. String - url to the origin of the three json files, frequency, result and results.
 2. Callback with function chart etc.
 
-####Chart(questionIndexArray, containerID, chartFunctionName)
+####chart(questionIndexArray, containerID, chartFunctionName)
 Must be executed inside visualizeFlashPoll callback to be executed.
 
 1. Array[int] - containing the id of the questions to visualize
@@ -112,6 +112,7 @@ Must be executed inside visualizeFlashPoll callback to be executed.
             - "swap" switch place of datasets
             - "p1" normalize question 1
             - "p2" normalize question 2
+
 Building
 -------
 Building this library requires node and grunt. To build it, navigate to the project directory and type `npm install` to install the grunt packages needed. Then, type `grunt` or `grunt human` to produce a human-readable version of the library, or `grunt dist` to produce a minified, mangled version suitable for a production environment. The files are named `v11n.js` and `v11n.min.js` respectively, and are created at the project's top level. There are two css files in ./css/ that should also be served. All of the other files present in the repository are for development / testing.
