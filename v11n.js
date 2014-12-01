@@ -6542,7 +6542,6 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 			return;
 		}
 		var matrix = buildEmptyMatrix(rows,columns);
-		console.log(matrix);
 		//For each user
 		data.forEach(function(d){
 			//For each question the user have answered
@@ -6567,13 +6566,11 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 							//If not out of bounds
 							if(u<rows && j<columns){
 								if(isOrdnial == 1){
-									console.log("WRONG");
 									matrix[u][answerOrder] += flashpoll.mergeOrdnial(matrix[u][answerOrder],score);
 								}else if(isOrdnial == 2){
 
 									matrix[u][answerOrder] += flashpoll.mergeOneOrder(matrix[u][answerOrder],score);
 								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
-									console.log("WRONG");
 									matrix[u][answerOrder] += flashpoll.mergeNominal(matrix[u][answerOrder],score);
 								}
 									
@@ -6587,14 +6584,12 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		});
 	addSideNames(matrix,header);
 	matrix.unshift(side);
-	console.log(matrix);
 	return matrix;
 	},
 	mergeOrder : function(q1,q2){
 	return q1 + q2;
 },
 	mergeOneOrder : function(q1,q2){
-		console.log("WRONG");
 	return q1 * q2;
 },
 	mergeNominal : function(q1,q2){
@@ -10024,21 +10019,22 @@ var visualizeFlashPoll = function(){
 	this.supercontainer;
 	this.optionsdata = new optionHandler();
 
-	this.init = function(callback){
+	this.init = function(url,callback){
 		var self = this;
 		var username = "fp_user";
 		var password = "62f1b45156af483d52f5f99c9b764007092193f9";
-		var c = username + ":" + password;
-		c = Base64.encode(c);
-		d3.json(url).header("Authorization", "Basic "+c)
+		console.log(btoa(username + ":" + password));
+		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password) + "==")
 		.get(function(error,structure) {
-			d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
+
+			
+			/*d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
 			.get(function(error,data) {
 				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
 				.get(function(error,frequency) {
-					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
-				});
-			});
+					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);*/
+		/*		});
+			});*/
 		});
 	}
 	this.initlocal = function(url,callback){

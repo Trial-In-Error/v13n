@@ -4,21 +4,22 @@ var visualizeFlashPoll = function(){
 	this.supercontainer;
 	this.optionsdata = new optionHandler();
 
-	this.init = function(callback){
+	this.init = function(url,callback){
 		var self = this;
 		var username = "fp_user";
 		var password = "62f1b45156af483d52f5f99c9b764007092193f9";
-		var c = username + ":" + password;
-		c = Base64.encode(c);
-		d3.json(url).header("Authorization", "Basic "+c)
+		console.log(btoa(username + ":" + password));
+		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password) + "==")
 		.get(function(error,structure) {
-			d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
+
+			
+			/*d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
 			.get(function(error,data) {
 				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
 				.get(function(error,frequency) {
-					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
-				});
-			});
+					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);*/
+		/*		});
+			});*/
 		});
 	}
 	this.initlocal = function(url,callback){
