@@ -225,11 +225,12 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 							//If not out of bounds
 							if(u<rows && j<columns){
 								if(isOrdnial == 1){
-									matrix[u][answerOrder] += flashpoll.merge(matrix[u][answerOrder],score);
+									matrix[u][answerOrder] += flashpoll.mergeOrdnial(matrix[u][answerOrder],score);
 								}else if(isOrdnial == 2){
-									matrix[u][answerOrder] += matrix[u][answerOrder] * score;
+
+									matrix[u][answerOrder] += flashpoll.mergeOneOrder(matrix[u][answerOrder],score);
 								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
-									matrix[u][answerOrder] ++;
+									matrix[u][answerOrder] += flashpoll.mergeNominal(matrix[u][answerOrder],score);
 								}
 									
 							}
@@ -244,8 +245,14 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	matrix.unshift(side);
 	return matrix;
 	},
-	merge : function(q1,q2){
+	mergeOrder : function(q1,q2){
 	return q1 + q2;
+},
+	mergeOneOrder : function(q1,q2){
+	return q1 * q2;
+},
+	mergeNominal : function(q1,q2){
+	return 1;
 },
 	checkOrdinal : function(type1, type2){
 		if(type1 == "FREETEXT" || type2 == "FREETEXT"){
