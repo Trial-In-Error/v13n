@@ -16,7 +16,6 @@ $RECYCLE.BIN/
 
 # Excluding 
 node_modules/
-config/
 chooser.html
 
 # =========================
