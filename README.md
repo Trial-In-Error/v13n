@@ -9,25 +9,32 @@ Example Use
 2. Serve the CSS required by the library with the page:
     `<link href="css/c3.css" rel="stylesheet">`
     `<link href="css/chart.css" rel="stylesheet">`
+3. Serve jQuery in conflict mode. This should be included in the HTML before serving the visualization library:
+    `<script src="some/path/to/jQuery/jQuery.min.js'></script>`
 3. Have a div somewhere in the page with an id to load the visualization into. The visualization will be created scaled to the div's size when the library is called.
     `<div id='someUniqueID' style ='height:350px; width:350px;'></div>`
 The height and width styles are only required for heatmap visualizations.
 4. Create a new object of type `visualizeFlashPoll`, then call its `flashChart` method. The generic form is:
-visualizeflashpollinstance.flashChart(urlString, questionIDsArray, divIDString, nameOfChartString, optionsObject)
-or call visualizepollinstance.initLocal(url,callback), call visualizeflashpollinstance.chart(questionIDsArray, divIDString, nameOfChartString, optionsObject) inside the callback.
+`visualizeflashpollinstance.flashChart(urlString, questionIDsArray, divIDString, nameOfChartString, optionsObject)`. Alternatively, you can call `visualizeflashpollinstance.initLocal(url,callback)`, calling `visualizeflashpollinstance.chart(questionIDsArray, divIDString, nameOfChartString, optionsObject)` inside the callback.
 
 Example of execution:
-
+    
+    // Use .flashChart() to fetch data and then chart it
     var vistool = new visualizeFlashPoll();
+    // This will create a bar chart from question id 1 and render it in the HTML element with the id "container"
     vistool.flashChart("http://some.origin/flashpoll", [1], "#container",
     "bar", { axis : false });
 
-    var flashvis = new visualizeFlashPoll();
-    flash.initlocal("../folder/flashpoll",function(){
-    flash.chart([0],"#chart1","bar",{color:0,title : "barchart question id 0", transformation:"swap"});
+    // Use init(callback chart()) to fetch data and then chart multiple graphs off the one GET
+    var vistool = new visualizeFlashPoll();
+    vistool.init("http://some.origin/flashpoll",function() {
+        // Render a horizontal bar chart from question id 0
+        vistool.chart([0],"#chart1","bar", {color: 0, title: "barchart question id 0", transformation: "swap"});
+        // Render a pie chart from question id 1
+        vistool.chart([1],"#chart1","pie", {color: 0, title: "pie question id 1"});
+        // Render a donut chart from question id 2
+        vistool.chart([2],"#chart1","donut", {color: 0, title: "donut question id 2"});
     });
-
-The call flashChart and chart will load question 1 from a poll at some.origin and create the visualization with no axes in the div with the id "container".
 
 Notes
 * There are no visualizations for free text questions.
@@ -74,14 +81,17 @@ Parameters
             - "p1" normalize question 1
             - "p2" normalize question 2
 
-####init(url,callback)
+####init(url, callback)
 Loads data and then executes the callback
 
 1. String - url to the origin of the three json files, frequency, result and results.
 2. Callback with function chart etc.
 
+####initlocal(url, callback)
+As per init, but uses local data (i.e., a JSON file with a relative path to it using the file system).
+
 ####chart(questionIndexArray, containerID, chartFunctionName)
-Must be executed inside visualizeFlashPoll callback to be executed.
+Must be executed inside init or initlocal callback.
 
 1. Array[int] - containing the id of the questions to visualize
 2. String - the div container id
@@ -117,7 +127,7 @@ Must be executed inside visualizeFlashPoll callback to be executed.
 Slideshow over the answer distribution of all the questions. This method must be executed inside the init callback.
 
 1. String - the div container id
-2.  Object - Object containing options for the chart (same as above)
+2. Object - Object containing options for the chart (same as above)
 
 Building
 -------
@@ -125,7 +135,7 @@ Building this library requires node and grunt. To build it, navigate to the proj
 
 Testing
 -------
-The example page, chooser.html, can be viewed by hosting it on a server. An easy way to set it up is to install node's simple-server with `npm simple-server`. Then, run it with `simple-server` and view it by opening up a browser, navigating to `http:localhost:3000`, and locating chooser.html. By default, it's found at `http://localhost:3000/v11n/chooser.html`. Any other simple server solution (WAMP, etc) will work as well. Note that any server listening on port 3000 will cause simple server to crash with an exception!
+The example page, `./flashpolltest/charttest.html`, can be viewed by hosting it on a server. An easy way to set it up is to install node's simple-server with `npm simple-server`. Then, run it with `simple-server` and view it by opening up a browser, navigating to `http:localhost:3000`, and locating `charttest.html`. By default, it's found at `http://localhost:3000/flashpolltest/charttest.html`. Any other simple server solution (WAMP, etc) will work as well. Note that any server listening on port 3000 will cause simple-server to crash with an exception!
 
 How are questions combined?
 -------
