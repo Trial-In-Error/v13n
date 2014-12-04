@@ -4,7 +4,7 @@ A small javascript library for visualizing, graphing, and charting!
 
 ***NOTE: The username and password for authentication are not stored in the library. For authentication to work, please create the file config/config.js with the contents listed below:***
 
-    var config = { username: someusername, password: somepassword }
+    var config = { user: someuser, password: somepassword }
 
 ***Then, concatenate config.js to v11n.js and v11n.min.js or use the grunt pass task (`grunt pass`) to concat for you.***
 
