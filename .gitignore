@@ -14,8 +14,9 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-# Grunt modules
+# Excluding 
 node_modules/
+config/
 chooser.html
 
 # =========================

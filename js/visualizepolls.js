@@ -7,8 +7,8 @@ var visualizeFlashPoll = function(){
 	this.init = function(url,callback){
 		this.flashdata = new flashdata();
 		var self = this;
-		var username = "fp_user";
-		var password = "62f1b45156af483d52f5f99c9b764007092193f9";
+		var username = config.user;
+		var password = config.password;
 		console.log(btoa(username + ":" + password));
 		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password))
 		.get(function(error,structure) {
@@ -22,7 +22,7 @@ var visualizeFlashPoll = function(){
 					callback();
 				});
 			});
-	});
+		});
 	}
 	this.initlocal = function(url,callback){
 		this.flashdata = new flashdata();
@@ -35,7 +35,10 @@ var visualizeFlashPoll = function(){
 		});
 	}
 	this.flashChart = function(url,question,container,chart,options){
+		this.flashdata = new flashdata();
 		var self = this;
+		var username = config.user;
+		var password = config.password;
 		d3.json(url, function(structure) {
 			d3.json(url+"/results", function(data) {
 				d3.json(url+"/result", function(frequency) {
@@ -49,28 +52,14 @@ var visualizeFlashPoll = function(){
 		console.log(this.flashdata);
 		flashpoll.visualizeChart(this,this.flashdata.structure,this.flashdata.data,this.flashdata.frequency,question,chart,container,options);
 	}
-	this.flashChartd = function(url,question,container,chart,options){
-		var username = "fp_user";
-		var password = "62f1b45156af483d52f5f99c9b764007092193f9";
-		var c = username + ":" + password;
-		c = Base64.encode(c);
-		d3.json(url).header("Authorization", "Basic "+c)
-		.get(function(error,structure) {
-			console.log("Basic " + btoa(username + ":" + password));
-			console.log(error);
-			console.log(structure);
-/*			d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
-			.get(function(error,data) {
-				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
-				.get(function(error,frequency) {
-
-					console.log(data);
-					console.log(frequency);
-					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
-
-				});
-	});*/
-	});
+	this.flashChartLocal = function(url,question,container,chart,options){
+		this.flashdata = new flashdata();
+		this.flashdata.seturl(url);
+		var self = this;
+		this.flashdata.getDataLocal(function(){
+			flashpoll.setDataArray(self,structure,frequency,options);
+			flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
+		});
 	}
 	this.quickOverview = function(container,options){
 		var q = 0;
