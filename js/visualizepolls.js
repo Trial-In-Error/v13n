@@ -5,21 +5,23 @@ var visualizeFlashPoll = function(){
 	this.optionsdata = new optionHandler();
 
 	this.init = function(url,callback){
+		this.flashdata = new flashdata();
 		var self = this;
 		var username = "fp_user";
 		var password = "62f1b45156af483d52f5f99c9b764007092193f9";
 		console.log(btoa(username + ":" + password));
-		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password) + "==")
+		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password))
 		.get(function(error,structure) {
-
-
-			/*d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
+			d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
 			.get(function(error,data) {
 				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
 				.get(function(error,frequency) {
-					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);*/
-		/*		});
-	});*/
+					self.flashdata.structure = structure;
+					self.flashdata.frequency = frequency;
+					self.flashdata.data = data;
+					callback();
+				});
+			});
 	});
 	}
 	this.initlocal = function(url,callback){
@@ -34,11 +36,9 @@ var visualizeFlashPoll = function(){
 	}
 	this.flashChart = function(url,question,container,chart,options){
 		var self = this;
-		d3.json(url+".json", function(structure) {
-			d3.json(url+"results.json", function(data) {
-				d3.json(url+"result.json", function(frequency) {
-					console.log(data);
-					console.log(frequency);
+		d3.json(url, function(structure) {
+			d3.json(url+"/results", function(data) {
+				d3.json(url+"/result", function(frequency) {
 					flashpoll.setDataArray(self,structure,frequency,options);
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
 				});
@@ -46,6 +46,7 @@ var visualizeFlashPoll = function(){
 		});
 	}
 	this.chart = function(question,container,chart,options){
+		console.log(this.flashdata);
 		flashpoll.visualizeChart(this,this.flashdata.structure,this.flashdata.data,this.flashdata.frequency,question,chart,container,options);
 	}
 	this.flashChartd = function(url,question,container,chart,options){
@@ -82,15 +83,15 @@ var visualizeFlashPoll = function(){
 		setInterval(function () {
 			$(container).empty();
 
-				q = (q+1)%link.flashdata.structure.questions.length;
+			q = (q+1)%link.flashdata.structure.questions.length;
 			while(link.flashdata.structure.questions[q].questionType == "FREETEXT"){
 				q = (q+1)%link.flashdata.structure.questions.length;
 			}
 			console.log("THIS IS THE QUESTIONTYPE");
-		console.log(link.flashdata.structure.questions[q].questionType);
-		
+			console.log(link.flashdata.structure.questions[q].questionType);
+
 			options.xlabel = "question " + link.flashdata.structure.questions[q].orderId;
 			flashpoll.visualizeChart(link,link.flashdata.structure,link.flashdata.data,link.flashdata.frequency,[link.flashdata.structure.questions[q].orderId],"sliderdonut",container,options);
-		}, 2000);
+		}, 3000);
 	}
 }

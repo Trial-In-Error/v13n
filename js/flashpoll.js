@@ -79,10 +79,9 @@ var flashpoll = {
 *param{int} nr - nr of what chart to use
 */
 visualizeChart : function(ref,structure,data,frequency,question,chart,container,options){
+	console.log(data);
 	var matrix;
-
 	var dt = "frequency";
-
 	ref.optionsdata.addChart(container);
 
 	if(question.length==1){
@@ -91,7 +90,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel","score")
 	}
 	else{
-		var matrix=flashpoll.getDoubleMatrix(structure,data,question);
+		 matrix=flashpoll.getDoubleMatrix(structure,data,question);
 		if(matrix==null){
 			return;
 		}
@@ -120,6 +119,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		// ref.optionsdata.array[ref.optionsdata.size-1].chartOptions =  options.chartOptions;
 		ref.optionsdata.setSize(ref.optionsdata.size-1);
 		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
+		console.log(ref.optionsdata.array)
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 
@@ -210,34 +210,34 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		var matrix = buildEmptyMatrix(rows,columns);
 		//For each user
 		data.forEach(function(d){
+			var tempmatrix = buildEmptyMatrix(rows,columns);
 			//For each question the user have answered
 			for (var i = 0; i < d.pollResQuestions.length; i++) {
 				//If the question is the first one in the searchlist
 				if(d.pollResQuestions[i].questionOrderId==ids[0]){
-					console.log(d);
+					//for each answer choice
 					for (var j = 0; j< d.pollResQuestions[i].pollResultAnswers.length; j++) {
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
-						console.log(d.pollResQuestions[i].pollResultAnswers[j]);
 						for (var u = 0; u < columns; u++){
-							matrix[answerOrder][u] = score;
+							tempmatrix[answerOrder][u] = score;
 						};
 					};
 				};
 				if(d.pollResQuestions[i].questionOrderId==ids[1]){
-					for (var j = 0; j< d.pollResQuestions[j].pollResultAnswers.length; j++) {
+					// for each answer in q 2
+					for (var j = 0; j< d.pollResQuestions[i].pollResultAnswers.length; j++) {
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;		
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
 						for (var u = 0; u < rows; u++){
 							//If not out of bounds
 							if(u<rows && j<columns){
 								if(isOrdnial == 1){
-									matrix[u][answerOrder] += flashpoll.mergeOrdnial(matrix[u][answerOrder],score);
+									matrix[u][answerOrder] += flashpoll.mergeOrder(tempmatrix[u][answerOrder],score);
 								}else if(isOrdnial == 2){
-
-									matrix[u][answerOrder] += flashpoll.mergeOneOrder(matrix[u][answerOrder],score);
-								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
-									matrix[u][answerOrder] += flashpoll.mergeNominal(matrix[u][answerOrder],score);
+									matrix[u][answerOrder] += flashpoll.mergeOneOrder(tempmatrix[u][answerOrder],score);
+								}else if(isOrdnial == -1 && tempmatrix[u][answerOrder] * score > 0){
+									matrix[u][answerOrder] += flashpoll.mergeNominal(tempmatrix[u][answerOrder],score);
 								}
 
 							}

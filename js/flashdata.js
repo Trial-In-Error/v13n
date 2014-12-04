@@ -2,9 +2,9 @@
 * This object contain data from a flashpoll and methods for fetching the data
 */
 var flashdata = function(){
-	this.structure;
-	this.results;
-	this.result;
+	this.structure = null;
+	this.data = null;
+	this.frequency = null;
 	this.url;
 	this.getDataLocal = function(callback){
 		console.log(this.url);

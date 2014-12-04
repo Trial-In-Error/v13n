@@ -20,11 +20,12 @@
   $( document ).ready(function() {
    flash = new visualizeFlashPoll();
    // opiner = new visualizeOpinerPoll();
-   flash.initlocal("../data/flashpoll",function(){/*
-    flash.chart([0],"#chart1","bar",{color:0,title : "barchart question id 0", transformation:"swap"});*/
-    flash.pollAnswerDistribution("#chart2","sliderdonut",{});
-    /*flash.chart([1],"#chart2","sliderdonut",{color:1,title : "barchart question id 1", chartOptions : { tooltip: {grouped : false}}});*/
- /*   flash.chart([2],"#chart3","bar",{color:2,title : "barchart question id 2"});
+   flash.init("http://pebeta.snet.tu-berlin.de/flashpoll/api/v3/poll/7111bf32-4a8c-40c6-9e2c-b5036433fac2",function(){
+    flash.quickOverview("#chart0","sliderdonut",{});
+    flash.chart([0],"#chart1","bar",{color:2,title : "barchart question id 0"});
+    flash.chart([1],"#chart2","bar",{color:0,title : "barchart question id 1", transformation:"swap"});
+   
+    flash.chart([2],"#chart3","bar",{color:2,title : "barchart question id 2"});
 
     flash.chart([0],"#chart4","pie",{color:3,title : "piechart question id 0"});
     flash.chart([1],"#chart5","pie",{color:2,title : "piechart question id 1"});
@@ -36,23 +37,15 @@
 
     flash.chart([0,1],"#chart7","bar",{color:0,title : "grouped bar question id 0,1"});
     flash.chart([1,2],"#chart8","bar",{color:2,title : "grouped bar question id 1,2"});
-    flash.chart([2,0],"#chart9","bar",{color:3,title : "grouped bar question id 2,0"});
 
     flash.chart([0,1],"#chart10","stackedbar",{color:0,title : "stackedbar question id 0,1", transformation : "p1"});
     flash.chart([1,2],"#chart11","stackedbar",{color:2,title : "stackedbar question id 1,2", transformation : "p2"});
-    flash.chart([2,0],"#chart12","stackedbar",{color:0,title : "stackedbar question id 2,0"});
 
     flash.chart([0,1],"#chart13","heatmap",{color:0,title : "heatmap question id 0,1", transformation:"swap"});
     flash.chart([1,2],"#chart14","heatmap",{color:2,title : "heatmap question id 1,2", transformation: "p1"});
-    flash.chart([2,0],"#chart15","heatmap",{color:1,title : "heatmap question id 2,0"});
 
     flash.chart([0,1],"#chart16","lineCat",{color:0,title : "categorial line question id 0,1"});
     flash.chart([1,2],"#chart17","lineCat",{color:2,title : "categorial line question id 1,2"});
-    flash.chart([2,0],"#chart18","lineCat",{color:1,title : "categorial line question id 2,0"});*/
-
- /*     v.flashChart("../data/flashpoll",[0],"#chart2","pie",null);
-      v.flashChart("../data/flashpoll",[1,2],"#chart3","stackedbar",{xlabel:"new label"});
-      v.flashChart("../data/flashpoll",[1,2],"#chart4","heatmap",{color:0,title : "this is a heatmap"});*/
     });
   /*   opiner.init("../data/winter.json",function(){
         opiner.visualizeChart([1],"pie",{title: "OPINER"},"#chart2");
@@ -64,9 +57,10 @@
 </head>
 
 <body>
-<!-- <div id="chart1" class="chart" style = " width:400px; height : 500px"></div> -->
+  <div id="chart0" class="chart" style = " width:400px; height : 500px"></div>
+<div id="chart1" class="chart" style = " width:400px; height : 500px"></div>
 <div id="chart2" class="chart" style = " width:400px; height : 500px"></div>
-<!-- <div id="chart3" class="chart" style = " width:400px; height : 500px"></div>
+<div id="chart3" class="chart" style = " width:400px; height : 500px"></div>
 
 <div id="chart4" class="chart" style = " width:400px; height : 500px"></div>
 <div id="chart5" class="chart" style = " width:400px; height : 500px"></div>
@@ -78,18 +72,18 @@
 
 <div id="chart7" class="chart" style = " width:400px; height : 500px"></div>
 <div id="chart8" class="chart" style = " width:400px; height : 500px"></div>
-<div id="chart9" class="chart" style = " width:400px; height : 500px"></div>
+<!-- <div id="chart9" class="chart" style = " width:400px; height : 500px"></div> -->
 
 <div id="chart10" class="chart" style = " width:400px; height : 500px"></div>
 <div id="chart11" class="chart" style = " width:400px; height : 500px"></div>
-<div id="chart12" class="chart" style = " width:400px; height : 500px"></div>
+<!-- <div id="chart12" class="chart" style = " width:400px; height : 500px"></div> -->
 
 <div id="chart13" class="chart" style = " height: 600px; width:600px"></div>
 <div id="chart14" class="chart" style = " height: 600px; width:600px"></div>
-<div id="chart15"class="chart"  style = " height: 600px; width:600px"></div>
+<!-- <div id="chart15"class="chart"  style = " height: 600px; width:600px"></div> -->
 
 <div id="chart16" class="chart" style = " width:400px; height : 500px"></div>
 <div id="chart17" class="chart" style = " width:400px; height : 500px"></div>
-<div id="chart18" class="chart" style = " width:400px; height : 500px"></div> -->
+<!-- <div id="chart18" class="chart" style = " width:400px; height : 500px"></div> -->
 </body>
 </html>

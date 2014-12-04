@@ -6316,9 +6316,9 @@ var errorMessages = {
 * This object contain data from a flashpoll and methods for fetching the data
 */
 var flashdata = function(){
-	this.structure;
-	this.results;
-	this.result;
+	this.structure = null;
+	this.data = null;
+	this.frequency = null;
 	this.url;
 	this.getDataLocal = function(callback){
 		console.log(this.url);
@@ -6419,10 +6419,9 @@ var flashpoll = {
 *param{int} nr - nr of what chart to use
 */
 visualizeChart : function(ref,structure,data,frequency,question,chart,container,options){
+	console.log(data);
 	var matrix;
-
 	var dt = "frequency";
-
 	ref.optionsdata.addChart(container);
 
 	if(question.length==1){
@@ -6431,7 +6430,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"ylabel","score")
 	}
 	else{
-		var matrix=flashpoll.getDoubleMatrix(structure,data,question);
+		 matrix=flashpoll.getDoubleMatrix(structure,data,question);
 		if(matrix==null){
 			return;
 		}
@@ -6460,6 +6459,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		// ref.optionsdata.array[ref.optionsdata.size-1].chartOptions =  options.chartOptions;
 		ref.optionsdata.setSize(ref.optionsdata.size-1);
 		ref.optionsdata.checkTitle(ref.optionsdata.size-1);
+		console.log(ref.optionsdata.array)
 		var chart = chartNames[chart](ref.optionsdata.getOption(ref.optionsdata.size-1));
 		ref.optionsdata.updateOption(ref.optionsdata.size-1,"c3",chart);
 
@@ -6550,34 +6550,34 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		var matrix = buildEmptyMatrix(rows,columns);
 		//For each user
 		data.forEach(function(d){
+			var tempmatrix = buildEmptyMatrix(rows,columns);
 			//For each question the user have answered
 			for (var i = 0; i < d.pollResQuestions.length; i++) {
 				//If the question is the first one in the searchlist
 				if(d.pollResQuestions[i].questionOrderId==ids[0]){
-					console.log(d);
+					//for each answer choice
 					for (var j = 0; j< d.pollResQuestions[i].pollResultAnswers.length; j++) {
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
-						console.log(d.pollResQuestions[i].pollResultAnswers[j]);
 						for (var u = 0; u < columns; u++){
-							matrix[answerOrder][u] = score;
+							tempmatrix[answerOrder][u] = score;
 						};
 					};
 				};
 				if(d.pollResQuestions[i].questionOrderId==ids[1]){
-					for (var j = 0; j< d.pollResQuestions[j].pollResultAnswers.length; j++) {
+					// for each answer in q 2
+					for (var j = 0; j< d.pollResQuestions[i].pollResultAnswers.length; j++) {
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;		
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
 						for (var u = 0; u < rows; u++){
 							//If not out of bounds
 							if(u<rows && j<columns){
 								if(isOrdnial == 1){
-									matrix[u][answerOrder] += flashpoll.mergeOrdnial(matrix[u][answerOrder],score);
+									matrix[u][answerOrder] += flashpoll.mergeOrder(tempmatrix[u][answerOrder],score);
 								}else if(isOrdnial == 2){
-
-									matrix[u][answerOrder] += flashpoll.mergeOneOrder(matrix[u][answerOrder],score);
-								}else if(isOrdnial == -1 && matrix[u][answerOrder] * score > 0){
-									matrix[u][answerOrder] += flashpoll.mergeNominal(matrix[u][answerOrder],score);
+									matrix[u][answerOrder] += flashpoll.mergeOneOrder(tempmatrix[u][answerOrder],score);
+								}else if(isOrdnial == -1 && tempmatrix[u][answerOrder] * score > 0){
+									matrix[u][answerOrder] += flashpoll.mergeNominal(tempmatrix[u][answerOrder],score);
 								}
 
 							}
@@ -10019,21 +10019,23 @@ var visualizeFlashPoll = function(){
 	this.optionsdata = new optionHandler();
 
 	this.init = function(url,callback){
+		this.flashdata = new flashdata();
 		var self = this;
 		var username = "fp_user";
 		var password = "62f1b45156af483d52f5f99c9b764007092193f9";
 		console.log(btoa(username + ":" + password));
-		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password) + "==")
+		d3.json(url).header("Authorization", "Basic "+btoa(username + ":" + password))
 		.get(function(error,structure) {
-
-
-			/*d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
+			d3.json(url+"/results").header("Authorization", "Basic " + btoa(username + ":" + password))
 			.get(function(error,data) {
 				d3.json(url+"/result").header("Authorization", "Basic " + btoa(username + ":" + password))
 				.get(function(error,frequency) {
-					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);*/
-		/*		});
-	});*/
+					self.flashdata.structure = structure;
+					self.flashdata.frequency = frequency;
+					self.flashdata.data = data;
+					callback();
+				});
+			});
 	});
 	}
 	this.initlocal = function(url,callback){
@@ -10048,11 +10050,9 @@ var visualizeFlashPoll = function(){
 	}
 	this.flashChart = function(url,question,container,chart,options){
 		var self = this;
-		d3.json(url+".json", function(structure) {
-			d3.json(url+"results.json", function(data) {
-				d3.json(url+"result.json", function(frequency) {
-					console.log(data);
-					console.log(frequency);
+		d3.json(url, function(structure) {
+			d3.json(url+"/results", function(data) {
+				d3.json(url+"/result", function(frequency) {
 					flashpoll.setDataArray(self,structure,frequency,options);
 					flashpoll.visualizeChart(self,structure,data,frequency,question,chart,container,options);
 				});
@@ -10060,6 +10060,7 @@ var visualizeFlashPoll = function(){
 		});
 	}
 	this.chart = function(question,container,chart,options){
+		console.log(this.flashdata);
 		flashpoll.visualizeChart(this,this.flashdata.structure,this.flashdata.data,this.flashdata.frequency,question,chart,container,options);
 	}
 	this.flashChartd = function(url,question,container,chart,options){
@@ -10085,7 +10086,7 @@ var visualizeFlashPoll = function(){
 	});*/
 	});
 	}
-	this.pollAnswerDistribution = function(container,chart,options){
+	this.quickOverview = function(container,options){
 		var q = 0;
 		while(this.flashdata.structure.questions[q].questionType == "FREETEXT"){
 			q = (q+1)%this.flashdata.structure.questions.length;
@@ -10096,16 +10097,16 @@ var visualizeFlashPoll = function(){
 		setInterval(function () {
 			$(container).empty();
 
-				q = (q+1)%link.flashdata.structure.questions.length;
+			q = (q+1)%link.flashdata.structure.questions.length;
 			while(link.flashdata.structure.questions[q].questionType == "FREETEXT"){
 				q = (q+1)%link.flashdata.structure.questions.length;
 			}
 			console.log("THIS IS THE QUESTIONTYPE");
-		console.log(link.flashdata.structure.questions[q].questionType);
-		
+			console.log(link.flashdata.structure.questions[q].questionType);
+
 			options.xlabel = "question " + link.flashdata.structure.questions[q].orderId;
 			flashpoll.visualizeChart(link,link.flashdata.structure,link.flashdata.data,link.flashdata.frequency,[link.flashdata.structure.questions[q].orderId],"sliderdonut",container,options);
-		}, 2000);
+		}, 3000);
 	}
 }
 var numberText = {
