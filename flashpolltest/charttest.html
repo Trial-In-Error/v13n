@@ -12,7 +12,7 @@
   body{
     margin-right:5%; 
     margin-left:5%;
-    background-color: #81BEF7;
+    background-color: #E6E6E6;
     font-family: 'Lato', sans-serif;
   }
   section {
@@ -20,7 +20,7 @@
     table-layout: fixed;
     width:100%;
     height:100%;
-    background-color: #F2F5A9;
+    background-color: #CEF6F5;
     border-radius: 40px;
     margin-bottom: 20px;
 
@@ -61,16 +61,16 @@
     flash.chart([1,2],"#chart8","bar",{color:2,title : "grouped bar question id 1,2"});*/
 
     flash.chart([0,1],"#chart10","stackedbar",{color:0,title : "stackedbar question id 0,1", transformation : "p1"});
-    flash.chart([1,2],"#chart11","stackedbar",{color:2,title : "stackedbar question id 1,2", transformation : "p2"});
-    flash.chart([0,2],"#chart12","stackedbar",{color:1,title : "stackedbar question id 1,2"});
+    flash.chart([1,2],"#chart11","stackedbar",{color:2,title : "stackedbar question id 1,2"});
+    flash.chart([0,2],"#chart12","stackedbar",{color:1,title : "stackedbar question id 0,2"});
 
     flash.chart([0,1],"#chart13","heatmap",{color:0,title : "heatmap question id 0,1"});
     flash.chart([1,2],"#chart14","heatmap",{color:2,title : "heatmap question id 1,2"});
-    flash.chart([0,2],"#chart15","heatmap",{color:2,title : "heatmap question id 1,2",transformation : "swap"});
+    flash.chart([0,2],"#chart15","heatmap",{color:2,title : "heatmap question id 0,2",transformation : "swap"});
 
     flash.chart([0,1],"#chart16","lineCat",{color:0,title : "categorial line question id 0,1"});
     flash.chart([1,2],"#chart17","lineCat",{color:2,title : "categorial line question id 1,2"});
-     flash.chart([0,2],"#chart18","lineCat",{color:1,title : "categorial line question id 1,2"});
+     flash.chart([0,2],"#chart18","lineCat",{color:1,title : "categorial line question id 0,2"});
   });
   /*   opiner.init("../data/winter.json",function(){
         opiner.visualizeChart([1],"pie",{title: "OPINER"},"#chart2");
@@ -181,11 +181,12 @@
   <div  class="chart" id="chart11"></div>
 </section>
 <section style="height:400px; ">
+   <div  class="chart" id="chart12"></div>
   <div class="textbox" >
     <h3>Stackedbar</h3>
     <p>Similar to the barchart but each bar shows the scores of q1 within an answer</p>
   </div>
-    <div  class="chart" id="chart12"></div>
+   
 </section>
 
 <!--|| HEATMAP ||-->
@@ -221,11 +222,9 @@
 
 </section>
 <section style="height:400px; ">
-
   <div class="textbox" >
    <h3>Linear</h3>
    <p>Similar to the barchart but with connecting lines, useful for categories that can be ordered, especially in time</p>
-
  </div>
    <div  class="chart" id="chart17"></div>
 </section>
@@ -235,7 +234,6 @@
     <h3>Linear</h3>
        <p>Similar to the barchart but with connecting lines, useful for categories that can be ordered, especially in time</p>
   </div>
-
 </section>
 
 </body>

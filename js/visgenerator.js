@@ -5,9 +5,7 @@ var visGenerator = {
 		}
 		return base;
 	},
-	visualizeChart : function(options){
 
-	},
 /*	getChartOptions : function(op){
 		var obj = new Object();
 		for(key in op){

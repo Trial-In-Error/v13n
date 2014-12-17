@@ -6760,11 +6760,7 @@ function functionName(fun) {
   return ret;
 }
 
-function transformation(matrix,trans){
-	if(trans == "swap"){
-		
-	}
-}
+
 function matrixToRevArray(matrix){
 	var ret = [];
 	for (var i = 0; i < matrix.length; i++) {
@@ -7084,6 +7080,20 @@ function transformation(matrix,trans){
 	}
 	return m;
 }
+
+function normalizeRow(a){
+
+	var max = 0;
+	for (var i = 0; i < a.length; i++) {
+		if(max < a[i]){
+			max=a[i];
+		}
+	};
+	for (var i = 0; i < a.length; i++) {
+		a[i] = a[i]/max
+	};
+	return a;
+}
 function createSlider(container,id,length){
 	var label = '<label for="sliderdonu'+id+'">Input slider:</label>'
 	var slider = '<input type="range" name="slider" id="sliderdonu'+id+'" value="1" min="1" max="'+ length +'" data-highlight="true" />'
@@ -7388,9 +7398,9 @@ init : function(ref,container,question,options){
 					var rnd = Math.floor(Math.random()*4);
 					optionHandler.addGridChart("#charty"+(optionHandler.size));
 					var chartyID = optionHandler.chartID + (optionHandler.size-1);
-					console.log(optionHandler.chartID);
-					console.log(optionHandler.size-1);
-					visframes.addBasic(container,"item","tumb"+optionHandler.size-1,"tumbchart", chartyID);
+					var tumbID = "tumb" + (optionHandler.size-1);
+				
+					visframes.addBasic(container,"item",tumbID,"tumbchart", chartyID);
 
 					optionHandler.updateOption(optionHandler.size-1,"matrix", matrix.slice(0));
 					optionHandler.updateOption(optionHandler.size-1,"orgmatrix",matrix.slice(0));
@@ -7419,7 +7429,8 @@ init : function(ref,container,question,options){
 				var rnd = Math.floor(Math.random()*4);
 				optionHandler.addGridChart("#charty"+(optionHandler.size));
 				var chartyID = optionHandler.chartID + (optionHandler.size-1);
-					visframes.addBasic(container,"item","tumb"+optionHandler.size-1,"tumbchart", chartyID);
+					var tumbID = "tumb" + (optionHandler.size-1);
+					visframes.addBasic(container,"item",tumbID,"tumbchart", chartyID);
 
 				optionHandler.updateOption(optionHandler.size-1,"matrix",copyMatrix(matrix));
 				optionHandler.updateOption(optionHandler.size-1,"orgmatrix",copyMatrix(matrix));
@@ -7963,7 +7974,7 @@ var optionHandler = function(){
 	// c.container = container;
 	this.array.push(c);
 	var chartyID = this.chartID + (this.size);
-	visframes.addBasic(container,"item","topid","tumbchart", chartyID);
+	visframes.addBasic(container,"item",chartyID,"tumbchart", chartyID);
 	this.array[this.size].container = "#"+chartyID;
 	this.size++;
 	return this.array.length-1;
@@ -8615,7 +8626,6 @@ var visframes = {
 		return $("<div class='"+topclass+"' id='"+topid+"'></div>").append("<div class='"+chartclass+"'' id='"+chartid+"'></div>");
 	},
 	addBasic: function(container,topclass,topid,chartclass,chartid){
-	
 			$(container).append(visframes.basicFrame(topclass,topid,chartclass,chartid));
 		
 
@@ -8629,9 +8639,7 @@ var visGenerator = {
 		}
 		return base;
 	},
-	visualizeChart : function(options){
 
-	},
 /*	getChartOptions : function(op){
 		var obj = new Object();
 		for(key in op){
@@ -9566,6 +9574,7 @@ function sliderDonut(options){
 	
 }
 function heatmap(options){
+	console.log("*******************HEATMAP***************************************" );
 	var m = options.matrix;
 	var head =  m[0].slice(1,m[0].length);
 	console.log(m);
@@ -10148,8 +10157,4 @@ var getWordHeight = function(word){
 	var height = $('#textw').height();
 	$('#textw').remove();
 	return height;
-}
-var config = {
-	user : "fp_user",
-	password :"62f1b45156af483d52f5f99c9b764007092193f9"
 }

@@ -143,8 +143,3 @@ function functionName(fun) {
   return ret;
 }
 
-function transformation(matrix,trans){
-	if(trans == "swap"){
-		
-	}
-}

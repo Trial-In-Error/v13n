@@ -20,19 +20,31 @@
    <!-- // <script  src="pearson/pearson-correlation.js"></script> -->
   <!-- // <script  src="simple-statistics-master/src/simple_statistics.js"></script> -->
  
+ <style type="text/css">
+
+    .item { height: 32vw; width: 32%; margin-bottom: 2vw;}
+
+    @media screen and (min-width: 720px) {
+      .item { width: 30vw; height: 30vw; margin-bottom: 6vw;}
+    }
+
+    .gutter-sizer {width: 5vw;}
+
+  
+ </style>
     <script type="text/javascript">
 
     var v;
     var container = "";
     $( document ).ready(function() {
 
-     v = new visualizepolls();
-     v.setURL("http://opine-r.herokuapp.com/pollroute/exportpolljson/54623beddb392c02007e1e55");
-     v.start(function(ref){
+     v = new visualizeOpinerPoll();
+     // v.setURL("data/jullov.json");
+     v.init("data/winter.json",function(){
       var options = {interaction: false, axis:false, legend : false, tooltip:false};
         // ref.visualizeChart(ref,[1],"pie",options,"#chart1");
-        ref.createGrid(ref,"#chart1",[],options);
-        // new Masonry("#chart1", { "columnWidth": ".item", "itemSelector": ".item", "gutter": ".gutter-sizer" })
+        v.createGrid(v,"#grid",[1,3],options);
+        new Masonry("#grid", { "columnWidth": ".item", "itemSelector": ".item", "gutter": ".gutter-sizer" })
      });
      // v.flashChart("data/flashpoll",[1,0],"#chart2","heatmap",{title : "HEAT"});
     //   var options = {chartOptions : {  legend: {
@@ -45,9 +57,9 @@
 </head>
 
 <body>
-  <div id="chart1" class="js-masonry"> 
+  <div id="grid" class="js-masonry"> 
 <!-- <div id="chart1"  ></div> -->
-<div id="chart2" style="height : 500px;"></div>
+<!-- <div id="chart2" style="height : 500px;"></div> -->
 <!-- <div id="chart2" style="height : 400px; width : 50%;"></div> -->
 <!-- <div id="chart2">andra</div>
 <div id="chart3">andra</div> -->

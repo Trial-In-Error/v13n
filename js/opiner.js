@@ -172,9 +172,9 @@ init : function(ref,container,question,options){
 					var rnd = Math.floor(Math.random()*4);
 					optionHandler.addGridChart("#charty"+(optionHandler.size));
 					var chartyID = optionHandler.chartID + (optionHandler.size-1);
-					console.log(optionHandler.chartID);
-					console.log(optionHandler.size-1);
-					visframes.addBasic(container,"item","tumb"+optionHandler.size-1,"tumbchart", chartyID);
+					var tumbID = "tumb" + (optionHandler.size-1);
+				
+					visframes.addBasic(container,"item",tumbID,"tumbchart", chartyID);
 
 					optionHandler.updateOption(optionHandler.size-1,"matrix", matrix.slice(0));
 					optionHandler.updateOption(optionHandler.size-1,"orgmatrix",matrix.slice(0));
@@ -203,7 +203,8 @@ init : function(ref,container,question,options){
 				var rnd = Math.floor(Math.random()*4);
 				optionHandler.addGridChart("#charty"+(optionHandler.size));
 				var chartyID = optionHandler.chartID + (optionHandler.size-1);
-					visframes.addBasic(container,"item","tumb"+optionHandler.size-1,"tumbchart", chartyID);
+					var tumbID = "tumb" + (optionHandler.size-1);
+					visframes.addBasic(container,"item",tumbID,"tumbchart", chartyID);
 
 				optionHandler.updateOption(optionHandler.size-1,"matrix",copyMatrix(matrix));
 				optionHandler.updateOption(optionHandler.size-1,"orgmatrix",copyMatrix(matrix));

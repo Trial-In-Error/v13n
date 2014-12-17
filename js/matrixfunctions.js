@@ -317,3 +317,17 @@ function transformation(matrix,trans){
 	}
 	return m;
 }
+
+function normalizeRow(a){
+
+	var max = 0;
+	for (var i = 0; i < a.length; i++) {
+		if(max < a[i]){
+			max=a[i];
+		}
+	};
+	for (var i = 0; i < a.length; i++) {
+		a[i] = a[i]/max
+	};
+	return a;
+}
