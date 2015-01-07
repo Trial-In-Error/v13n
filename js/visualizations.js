@@ -958,7 +958,7 @@ function heatmap(options){
 	var centerPadding = (w-(textLength + gridSize * columnlength))/2;
           //antal färger
 
-          var index = options.container.split("charty").slice(-1)[0]-1;
+          var index = options.container.split("charty").slice(-1)[0];
           buckets = 8;
           options.classname="tumbheat";
           var svg = d3.select(options.container).append("svg")
@@ -1063,8 +1063,8 @@ var colorScale = d3.scale.quantile()
 console.log(fontSize);*/
 var index = options.id;
 		// var h = $(options.container).parent().width() - ($(options.container).parent().width() - $(options.container).height())
-		// var h =nHeight;
-		var	h = $(options.container).parent().parent().height();
+		var h =nHeight;
+		// var	h = $(options.container).parent().parent().height();
 		var titleHight = getWordWidth2("T") * 3;
 		var topWord = getArrayMaxElement(dim_2,0).trunc(MAXWORDLENGHT);
 		var marginTop = getWordWidth2(topWord);
@@ -1072,7 +1072,7 @@ var index = options.id;
 		var textLength = getWordWidth2(longestElement);
 		// var gridSize = Math.floor((h-marginTop)/(maxSize+2));
 		var gridSize = Math.floor((w-textLength)/(maxSize+2));
-		var gridSize2 = Math.floor((h-marginTop-gridSize*2-titleHight)/(maxSize+2));
+		var gridSize2 = Math.floor((h-marginTop-titleHight)/(maxSize+2));
 		if(gridSize2<gridSize){
 			gridSize = gridSize2;
 		}
@@ -1094,9 +1094,9 @@ var index = options.id;
 		}
 
 
-		var centerPadding = ($(options.container).width()-(textLength + (gridSize * cc)))/2;
-	// var centerPadding = 0;
-	var index = options.container.split("charty").slice(-1)[0]-1;
+		// var centerPadding = (width-textLength - (gridSize * cc))/2;
+	var centerPadding = 0;
+	var index = options.container.split("charty").slice(-1)[0];
           //LEGEND RANGE
           var  buckets = getMatrixMax(options.matrix);
           var numberForm = textformat.numberShorten(buckets);

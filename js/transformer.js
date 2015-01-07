@@ -117,7 +117,7 @@ $("#charty" + ind ).css('width',$(id).width());
 if(optionHandler.array[index].classname == "tumbheat"){
 
 	d3.select("#tumbheat" + index).remove();
-// console.log("tumbheat" + optionHandler.array[index].container);
+console.log("tumbheatindex" + index);
 
 
 // transformer.setTransButtons(optionHandler.array[index],index);
@@ -169,7 +169,7 @@ return;
 		$(id+' :not(.tumbchart):not(.tumbchart *)').remove();
 
 		var index = id.split("tumb").slice(-1)[0];
-
+		console.log("this is the index " + index);
 		var ind = parseInt(index);
 		console.log(ind);
 		console.log("chart height: " + $("#charty"+ ind).height());
