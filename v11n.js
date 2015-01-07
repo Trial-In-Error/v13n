@@ -7414,7 +7414,8 @@ init : function(ref,container,question,options){
 					optionHandler.addOptions(optionHandler.size-1,options);
 					console.log(optionHandler.array[optionHandler.size-1].xlabel);
 					//Quick bug fix
-					$("#charty"  +(optionHandler.size) ).css('max-height','none');
+					$("#charty"  +(optionHandler.size-1) ).css('height',$('.grid-sizer').width());
+					// $('.tumbchart').css('max-height','none');
 					var chart = visualizationTypes[i].types[u](optionHandler.getOption(optionHandler.size-1));
 					console.log(chart);
 					optionHandler.updateOption(optionHandler.size-1,"c3",chart);
@@ -7979,7 +7980,7 @@ var optionHandler = {
 	optionHandler.size++;
 	return optionHandler.array.length-1;
 },
-	addGridChart : function(container){
+addGridChart : function(container){
 	var c = JSON.parse(JSON.stringify(defaultOptions));
 	c.container = container;
 	optionHandler.array.push(c);
@@ -8064,8 +8065,9 @@ var defaultOptions = {
 	norm2 : false,
 	correlation : null,
 	independence: null,
-  	legendMargin : 0,
-   	swap: false,
+	legendMargin : 0,
+	swap: false,
+	tumb : true
 }
 /**
 * optionHandler holds all the charts data and functions for
@@ -8442,7 +8444,7 @@ return;
 		
 		// $(id).height($("#tumb" + index).height - $(".titleText").height() - $(".infoText").height() - - $(".infoText").height());
 		
-
+		optionHandler.array[index].tumb = false;
 		var chart = optionHandler.array[index].chart(optionHandler.array[index]);
 		optionHandler.array[index].c3 = chart;
 
@@ -8477,6 +8479,7 @@ return;
 		optionHandler.array[index].tooltip = false;
 		optionHandler.array[index].axis = false;
 		optionHandler.array[index].interaction = false;
+		optionHandler.array[index].tumb = true;
 		optionHandler.array[index].matrix = copyMatrix(optionHandler.array[index].orgmatrix);
 		var chart = optionHandler.array[index].chart(optionHandler.array[index]);
 		optionHandler.array[index].c3 = chart;
@@ -8736,11 +8739,17 @@ return;
 var visframes = {
 	container : null,
 	basicFrame : function(topclass,topid,chartclass,chartid){
-		return $("<div class='"+topclass+"' id='"+topid+"' style='height:" + $('#grid-sizer').width() + "'; width='"  + $('#grid-sizer').width() + "'></div>").append("<div class='"+chartclass+"'' id='"+chartid+"'></div>");
+
+		return outer.append(inner);
 	},
 	addBasic: function(container,topclass,topid,chartclass,chartid){
-			$(container).append(visframes.basicFrame(topclass,topid,chartclass,chartid));
-		
+			var outer ="<div class='"+topclass+"' id='"+topid+"'></div>";
+			var inner ="<div class='"+chartclass+"'' id='"+chartid+"'></div>";
+
+			$(container).append(outer);
+			$("#"+topid).append(inner);
+			// $(container).append(visframes.basicFrame(topclass,topid,chartclass,chartid));
+			
 
 	}
 }
@@ -8802,7 +8811,12 @@ function bar(options){
 		names.push(m[0][i]);
 	};
 	//Space between legend and chart depentent on length of axistext and rotation
-	options.legendMargin = xHeight(names,r);
+	if(!options.tumb){
+			options.legendMargin = xHeight(names,r);
+		}else{
+			options.legendMargin=0;
+		}
+
 	// options.legendMargin = textWidth(getArrayMaxElement(),)
 
 	//Specifications for the chart
@@ -9466,7 +9480,9 @@ function stackedBar(options){
 		r= rotateText(options.matrix[0],names);
 	}
 	// var xMargin = xHeight(options);
-	options.legendMargin = xHeight(names2,r);
+	if(!options.tumb){
+			options.legendMargin = xHeight(names,r);
+	}
 	// matrix.unshift(header);
 	var settings = {
 		bindto: options.container,
@@ -9517,9 +9533,6 @@ function stackedBar(options){
 		legend : {
 			show : options.legend
 		},
-		padding : {
-			left : 100
-		}
 	};
 	if(options.chartOptions != null){
 		settings = visGenerator.addOptions(settings,options.chartOptions);

@@ -38,7 +38,12 @@ function bar(options){
 		names.push(m[0][i]);
 	};
 	//Space between legend and chart depentent on length of axistext and rotation
-	options.legendMargin = xHeight(names,r);
+	if(!options.tumb){
+			options.legendMargin = xHeight(names,r);
+		}else{
+			options.legendMargin=0;
+		}
+
 	// options.legendMargin = textWidth(getArrayMaxElement(),)
 
 	//Specifications for the chart
@@ -702,7 +707,9 @@ function stackedBar(options){
 		r= rotateText(options.matrix[0],names);
 	}
 	// var xMargin = xHeight(options);
-	options.legendMargin = xHeight(names2,r);
+	if(!options.tumb){
+			options.legendMargin = xHeight(names,r);
+	}
 	// matrix.unshift(header);
 	var settings = {
 		bindto: options.container,
@@ -753,9 +760,6 @@ function stackedBar(options){
 		legend : {
 			show : options.legend
 		},
-		padding : {
-			left : 100
-		}
 	};
 	if(options.chartOptions != null){
 		settings = visGenerator.addOptions(settings,options.chartOptions);
