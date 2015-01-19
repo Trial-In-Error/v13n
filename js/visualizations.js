@@ -117,7 +117,12 @@ function histogram(options){
 	var d=ma[0];
 	var names = d[0].slice(0);
 	//
+	if(options.xlabel != null){
 	d[0].unshift(options.xlabel);
+	}else{
+		options.xlabel = "interval"
+		d[0].unshift("interval");
+	}
 	var r = rotateText(names, options);
 
 	options.legendMargin = xHeight(names,70);
@@ -125,7 +130,7 @@ function histogram(options){
 		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
-			x: "Answer",
+			x: options.xlabel,
 			columns : d,
 			type: 'bar',
 			color: function (color, d) {
@@ -245,7 +250,7 @@ function line(options){
 			columns : options.matrix,
 			type: 'line',
 			color: function (color, d) {
-				return datacolors.getColor(d,names);
+				return datacolors.getColor(d,names,options);
 			}
 		},
 		tooltip: {
@@ -301,10 +306,7 @@ function scatter(options){
 	t[options.matrix[1][0]]=options.matrix[0][0];
 	title["label"] = options.matrix[1][0];
 
-	if(options.chartOptions != null){
-		settings = visGenerator.addOptions(settings,options.chartOptions);
-	}
-	var chart = c3.generate({
+var settings = {
 		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
@@ -348,7 +350,11 @@ function scatter(options){
 			r: function(d){return 4}
 		}
 		
-	});
+	};
+	if(options.chartOptions != null){
+		settings = visGenerator.addOptions(settings,options.chartOptions);
+	}
+	var chart = c3.generate(settings);
 	return chart;
 }
 /**
@@ -372,11 +378,7 @@ function regressionline(options){
 	var y = options.matrix[1][0];
 	var x = options.matrix[0][0];
 	title["label"] = options.matrix[1][0];
-
-	if(options.chartOptions != null){
-		settings = visGenerator.addOptions(settings,options.chartOptions);
-	}
-	var chart = c3.generate({
+var settings = {
 		bindto: options.container,
 		interaction: { enabled:  options.interaction },
 		data: {
@@ -385,7 +387,7 @@ function regressionline(options){
 			type: 'scatter',
 			color: function (color, d) {
 				console.log(d);
-				return datacolors.getColor(d,names);
+				return datacolors.getColor(d,names,options);
 			},
 			onclick: function (d, i) { 
 				console.log(toggle);
@@ -453,7 +455,11 @@ function regressionline(options){
 			r: function(d){return 4}
 		}
 		
-	});
+	};
+	if(options.chartOptions != null){
+		settings = visGenerator.addOptions(settings,options.chartOptions);
+	}
+	var chart = c3.generate(settings);
 
 
 return chart;
