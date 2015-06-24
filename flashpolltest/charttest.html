@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title>SomeCharts</title>
+	<title>flashpoll visualization tool</title>
 	<meta charset="utf-8">
 	<script src="../js/lib/jquery.js" charset="utf-8"></script>
 	<link href="../css/c3.css" rel="stylesheet" type="text/css">
@@ -142,12 +142,12 @@
 
 		// flash.chart([2],"#chart7","donut",{color:3});
 		flash.chart([3],"#chart8","donut",{color:2});
-		flash.chart([4],"#chart9","donut",{color:0});
+		// flash.chart([4],"#chart9","donut",{color:0});
 
 		// flash.chart([0,1],"#chart7","bar",{color:0,title : "grouped bar question id 0,1"});
 		// flash.chart([1,2],"#chart8","bar",{color:2,title : "grouped bar question id 1,2"});
 
-		flash.chart([1,2],"#chart10","stackedbar",{color:0, transformation : "p1"});
+		flash.chart([1,3],"#chart10","stackedbar",{color:0, transformation : "p1"});
 
 		// flash.chart([2,3],"#chart11","stackedbar",{color:2, transformation : "p2"});
 		// flash.chart([4,5],"#chart12","stackedbar",{color:1});
@@ -172,7 +172,7 @@
 	<div class="backgroundContainer"></div>
 	<div class="headerWrapper">
 		<div class="header">
-			<h1 style="text-align:center">This is a testpage for the flashpoll visualization tool</h1>
+			<h1 style="text-align:center">flashpoll visualization tool</h1>
 		</div>
 	</div>
 
@@ -272,7 +272,7 @@
 	</div>
 </section>
 
-<section class="odd">
+<!-- <section class="odd">
 	<div class="textbox" >
 		<h3>Donutchart</h3>
 		<p>Distribution of the score for each answer</p>
@@ -280,16 +280,17 @@
 	<div class="chartContainer">
 		<div  class="chart" id="chart9"></div>
 	</div>
-</section>
+</section> -->
 
 <!--|| STACKEDBAR ||-->
-<section class="even">
+<section class="odd">
 	<div class="chartContainer">
 		<div class="chart" id="chart10"></div>
 	</div>
 	<div class="textbox" >
 		<h3>Stackedbar</h3>
-		<p>Question one is normalized meaning each bar show the distribution of q1 in each bar(answer in q2)</p>
+		<p>Presents the users who answered the first question (Finden Sie die Regelunge) as horizontal bars, split by their choices of answer to the second question (Finden Sie den Einsatz). We can see that most users that chose Teilweise for ... Regelunge ... chose Nein for ... Einsatz ...</p>
+		<p>Click on the bars to split them apart, and again to merge them.</p> 
 	</div>
 </section>
 
@@ -314,13 +315,13 @@
 </section> -->
 
 <!--|| LINE ||-->
-<section class="odd">
+<section class="even">
 	<div class="chartContainer">
 		<div  class="chart" id="chart16"></div>
 	</div>
 	<div class="textbox" >
 		<h3>Linear</h3>
-		<p>Similar to the barchart but with connecting lines, useful for categories that can be ordered, especially in time</p>
+		<p>Similar to the barchart but with connecting lines, useful for categories that can be ordered, especially in time.</p>
 	</div>
 </section>
 
