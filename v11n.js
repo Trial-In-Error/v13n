@@ -6428,7 +6428,16 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		console.log('A');
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
 		console.log(matrix);
-		optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[question[0]].questionText)
+		console.log(question)
+		console.log(structure.questions)
+		structure.questions.forEach(function(d){
+			if(d.orderId==question[0]-1) {
+				console.log(d.orderId)
+				console.log(structure.questions[d.orderId]);
+				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[d.orderId].questionText)
+			}
+		});
+		// optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[question[0]].questionText)
 		optionHandler.updateOption(optionHandler.size-1,"ylabel","score")
 	}
 	else{
@@ -6506,7 +6515,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		for (var i = 0; i < frequency.pollResQuestions.length; i++) {
 			if(frequency.pollResQuestions[i].questionOrderId == id+1){
 				structure.questions.forEach(function(d){
-					if(id+1==d.orderId){
+					if(id==d.orderId){
 						matrix = flashpoll.generateSingleMatrix(d,frequency.pollResQuestions[i].pollResultAnswers);
 						console.log(matrix);
 					}
