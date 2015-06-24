@@ -6433,14 +6433,16 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		structure.questions.forEach(function(d){
 			//console.log(structure.questions[0])
 			console.log(d.orderId);
-			console.log(question[0]-1);
-			if(question[0]-1 == 0) {
-				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[0].questionText)
+			console.log(question[0]);
+			if(question[0] === 1 && d.orderId === 1) {
+				console.log(structure.questions[0])
+				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[arrayObjectIndexOf(structure.questions, d.orderId, "orderId")].questionText)
+				return;
 			}
-			if(d.orderId==question[0]-1) {
+			if(d.orderId==question[0]) {
 				console.log(d.orderId)
 				console.log(structure.questions[d.orderId].questionText);
-				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[d.orderId].questionText)
+				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[arrayObjectIndexOf(structure.questions, d.orderId, "orderId")].questionText)
 			}
 		});
 		// optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[question[0]].questionText)
@@ -10325,3 +10327,11 @@ var getWordHeight = function(word){
 	return height;
 }
 var config = { user: 'fp_user', password: '62f1b45156af483d52f5f99c9b764007092193f9' }
+
+
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i][property] === searchTerm) return i;
+    }
+    return -1;
+}
