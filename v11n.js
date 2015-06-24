@@ -6425,13 +6425,17 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	optionHandler.addChart(container);
 
 	if(question.length==1){
+		console.log('A');
 		matrix =  flashpoll.getSingleMatrix(structure,frequency,question[0]);
+		console.log(matrix);
 		optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[question[0]].questionText)
 		optionHandler.updateOption(optionHandler.size-1,"ylabel","score")
 	}
 	else{
+		console.log('B');
 		 matrix=flashpoll.getDoubleMatrix(structure,data,question);
 		if(matrix==null){
+			console.log('C');
 			return;
 		}
 		var subtitle = "";
@@ -6443,7 +6447,9 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		optionHandler.updateOption(optionHandler.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
 		optionHandler.updateOption(optionHandler.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
 	}
+	console.log('D');
 	matrix = transformation(matrix, options.transformation);
+	console.log(matrix);
 	optionHandler.updateOption(optionHandler.size-1,"matrix",matrix);
 
 
@@ -6496,10 +6502,11 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 	},
 	getSingleMatrix : function(structure,frequency,id){
 		var matrix;
+		console.log('ID requested: '+id)
 		for (var i = 0; i < frequency.pollResQuestions.length; i++) {
-			if(frequency.pollResQuestions[i].questionOrderId == id){
+			if(frequency.pollResQuestions[i].questionOrderId == id+1){
 				structure.questions.forEach(function(d){
-					if(id==d.orderId){
+					if(id+1==d.orderId){
 						matrix = flashpoll.generateSingleMatrix(d,frequency.pollResQuestions[i].pollResultAnswers);
 						console.log(matrix);
 					}
@@ -6510,9 +6517,11 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		return matrix;
 	},
 	generateSingleMatrix : function(answers,data){
+		console.log(data);
 		var matrix = [];
 		for (var i = 0; i < answers.answers.length; i++) {
-			matrix.push([answers.answers[i].answerText,data[answers.answers[i].orderId].answerScore]);
+			console.log(data[answers.answers[i].orderId - 1]);
+			matrix.push([answers.answers[i].answerText,data[answers.answers[i].orderId - 1].answerScore]);
 		};
 		matrix.unshift(["Answer","Score"]);
 		return matrix;
@@ -6560,7 +6569,9 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 						var answerOrder = d.pollResQuestions[i].pollResultAnswers[j].answerOrderId;
 						var score = d.pollResQuestions[i].pollResultAnswers[j].answerScore;
 						for (var u = 0; u < columns; u++){
-							tempmatrix[answerOrder][u] = score;
+							// console.log(tempmatrix);
+							// console.log(tempmatrix[answerOrder -1 ])
+							tempmatrix[answerOrder -1][u] = score;
 						};
 					};
 				};
@@ -10298,3 +10309,4 @@ var getWordHeight = function(word){
 	$('#textw').remove();
 	return height;
 }
+var config = { user: 'fp_user', password: '62f1b45156af483d52f5f99c9b764007092193f9' }
