@@ -24,12 +24,23 @@
 		background-color: transparent;
 		font-family: 'Lato', sans-serif;
 	}
+
+	.c3-legend-item {
+		font-size: 1vw;
+		font-weight: normal;
+	}
+
+	.c3-chart-arc text {
+		font-size: 1vw;
+	}
+
 	section {
+		overflow: hidden;
 		border: 4px;
 		border-color: #3E3E3E;
 		border-style: solid;
 		width:calc(100vw-100px);
-		height:100vh;
+		height: 80vh;
 		box-sizing: border-box;
 		background-color: #FEFEFE;
 		border-radius: 40px;
@@ -101,6 +112,10 @@
 		z-index:-1;
 	}
 
+	svg {
+		overflow: visible !important;
+	}
+
 	</style>
 	<script type="text/javascript">
 
@@ -116,31 +131,31 @@
 	 
 	 flash.init("http://pep.snet.tu-berlin.de/flashpoll/api/v5/poll/2c298047-0733-4e89-8c0d-67c5747b79cb",function(){
 		// flash.quickOverview("#chart0","sliderdonut",{});
-		flash.chart([4],"#chart1","bar",{color:2});
-		// flash.chart([1],"#chart2","bar",{color:0, transformation: "swap"});
+		flash.chart([1],"#chart1","bar",{color:2});
+		flash.chart([5],"#chart2","bar",{color:0});
 
-		// flash.chart([2],"#chart3","bar",{color:2});
+		// flash.chart([3],"#chart3","bar",{color:2});
 
-		// flash.chart([0],"#chart4","pie",{color:3});
-		// flash.chart([1],"#chart5","pie",{color:2});
-		// flash.chart([2],"#chart6","pie",{color:0});
+		// flash.chart([4],"#chart4","pie",{color:3});
+		// flash.chart([5],"#chart5","pie",{color:2});
+		flash.chart([1],"#chart6","pie",{color:0});
 
-		// flash.chart([0],"#chart7","donut",{color:3});
-		// flash.chart([1],"#chart8","donut",{color:2});
-		// flash.chart([2],"#chart9","donut",{color:0});
+		// flash.chart([2],"#chart7","donut",{color:3});
+		flash.chart([3],"#chart8","donut",{color:2});
+		flash.chart([4],"#chart9","donut",{color:0});
 
 		// flash.chart([0,1],"#chart7","bar",{color:0,title : "grouped bar question id 0,1"});
 		// flash.chart([1,2],"#chart8","bar",{color:2,title : "grouped bar question id 1,2"});
 
-		// flash.chart([0,1],"#chart10","stackedbar",{color:0, transformation : "p1"});
+		flash.chart([1,2],"#chart10","stackedbar",{color:0, transformation : "p1"});
 
-		// flash.chart([1,2],"#chart11","stackedbar",{color:2, transformation : "p2"});
-		// flash.chart([1,2],"#chart12","stackedbar",{color:1});
+		// flash.chart([2,3],"#chart11","stackedbar",{color:2, transformation : "p2"});
+		// flash.chart([4,5],"#chart12","stackedbar",{color:1});
 
-		// flash.chart([0,1],"#chart13","heatmap",{color:0, transformation:"swap"});
-		// flash.chart([1,2],"#chart14","heatmap",{color:2, transformation: "p1"});
+		// flash.chart([1,2],"#chart13","heatmap",{color:0, transformation:"swap"});
+		// flash.chart([2,3],"#chart14","heatmap",{color:2, transformation: "p1"});
 
-		// flash.chart([0,1],"#chart16","lineCat",{color:0});
+		flash.chart([2,3],"#chart16","lineCat",{color:0});
 		// flash.chart([1,2],"#chart17","lineCat",{color:2});
 
 	});
@@ -157,12 +172,12 @@
 	<div class="backgroundContainer"></div>
 	<div class="headerWrapper">
 		<div class="header">
-			<h1 style="text-align:center">This is a testpage for the visualization tool</h1>
+			<h1 style="text-align:center">This is a testpage for the flashpoll visualization tool</h1>
 		</div>
 	</div>
 
 	<!--|| OVERVIEW ||-->
-	<section class="even">
+<!-- 	<section class="even">
 		<div class="chartContainer">
 			<div class="chart" id="chart0" style="float: left; width:50%;"></div>
 		</div>
@@ -170,7 +185,7 @@
 			<h3>Poll overview</h3>
 			<p>This visualization loops through all of the questions<br/> and shows the distribution of the score of the answers</p>
 		</div>
-	</section>
+	</section> -->
 
 
 	<!--|| BARCHARTS ||-->
@@ -191,11 +206,11 @@
 		<div class="textbox" >
 			<h3>Bar chart</h3>
 
-			<p>Each bar is the sum of the score for each answer, transfromation swap has been used the change the form of the barchart</p>
+			<p>When there are many answer options, the chart will swap orientations to allow for the large legend.</p>
 		</div>
 	</section>
 
-	<section class="odd">
+<!-- 	<section class="odd">
 		<div class="textbox" >
 			 <h3>Bar chart</h3>
 			 <p>Each bar is the sum of the score for each answer, the bar switches sideways when it have reached 7 or more bars</p>
@@ -203,10 +218,10 @@
 		<div class="chartContainer">
 			<div  class="chart" id="chart3"></div>
 		</div>
-</section>
+	</section> -->
 
 <!--|| PIECHARTS ||-->
-<section class="even">
+<!-- <section class="even">
 	<div class="chartContainer">
 		<div  class="chart" id="chart4"></div>
 	</div>
@@ -224,20 +239,20 @@
 	<div class="chartContainer">
 		<div  class="chart" id="chart5"></div>
 	</div>
-</section>
+</section> -->
 
-<section class="even">
+<section class="odd">
 	<div class="chartContainer">
 		<div class="chart" id="chart6"></div>
 	</div>
 	<div class="textbox" >
 		<h3>Piechart</h3>
-		<p>Distribution of the score for each answer</p>
+		<p>Pie charts show the percent of participants that voted on a particular answer option. Click on the legend to hide or show answer options and see what percentage of the <i>remaining</i> users voted for the remaining answer options.</p>
 	</div>
 </section>
 
 <!--|| DONUTCHARTS ||-->
-<section class="odd">
+<!-- <section class="odd">
 	<div class="textbox" >
 		<h3>Donutchart</h3>
 		<p>Distribution of the score for each answer</p>
@@ -245,7 +260,7 @@
 	<div class="chartContainer">
 		<div  class="chart" id="chart7"></div>
 	</div>
-</section>
+</section> -->
 
 <section class="even">
 	<div class="chartContainer">
@@ -253,7 +268,7 @@
 	</div>
 	<div class="textbox" >
 		<h3>Donutchart</h3>
-		<p>Distribution of the score for each answer</p>
+		<p>An aesthetic variation on the pie chart. Use a donut chart for similar purposes.</p>
 	</div>
 </section>
 
@@ -278,14 +293,14 @@
 	</div>
 </section>
 
-<section class="odd">
+<!-- <section class="odd">
 	<div class="textbox" >
 		<h3>Stackedbar</h3>
 		<p>Similar to the barchart but each bar shows the scores of q1 within an answer</p>
 	</div>
 	<div class="chartContainer">
-	<div  class="chart" id="chart11"></div>
-</div>
+		<div class="chart" id="chart11"></div>
+	</div>
 </section>
 
 <section class="even">
@@ -293,10 +308,10 @@
 		<div class="chart" id="chart12"></div>
 	</div>
 	<div class="textbox" >
-	<h3>Stackedbar</h3>
-	<p>Similar to the barchart but each bar shows the scores of q1 within an answer</p>
-</div>
-</section>
+		<h3>Stackedbar</h3>
+		<p>Similar to the barchart but each bar shows the scores of q1 within an answer</p>
+	</div>
+</section> -->
 
 <!--|| LINE ||-->
 <section class="odd">
@@ -309,7 +324,7 @@
 	</div>
 </section>
 
-<section class="even">
+<!-- <section class="even">
 	<div class="textbox" >
 		<h3>Linear</h3>
 		<p>Similar to the barchart but with connecting lines, useful for categories that can be ordered, especially in time</p>
@@ -317,9 +332,9 @@
 	<div class="chartContainer">
 		<div  class="chart" id="chart17"></div>
 	</div>
-</section>
+</section> -->
 
-<section class="odd">
+<!-- <section class="odd">
 	<div class="chartContainer">
 		<div  class="chart" id="chart18"></div>
 	</div>
@@ -338,6 +353,6 @@
 		<div  class="chart" id="chart3"></div>
 	</div>
 </section>
-
+ -->
 </body>
 </html>

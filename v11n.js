@@ -6435,13 +6435,13 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 			console.log(d.orderId);
 			console.log(question[0]);
 			if(question[0] === 1 && d.orderId === 1) {
-				console.log(structure.questions[0])
+				//console.log(structure.questions[0])
 				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[arrayObjectIndexOf(structure.questions, d.orderId, "orderId")].questionText)
 				return;
 			}
 			if(d.orderId==question[0]) {
-				console.log(d.orderId)
-				console.log(structure.questions[d.orderId].questionText);
+				//console.log(d.orderId)
+				//console.log(structure.questions[d.orderId].questionText);
 				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[arrayObjectIndexOf(structure.questions, d.orderId, "orderId")].questionText)
 			}
 		});
@@ -6457,12 +6457,15 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		}
 		var subtitle = "";
 		for(i=0; i<question.length; i++){
+			console.log(i)
+			console.log(question)
+			console.log(structure.questions);
 			subtitle += "-";
-			subtitle += structure.questions[question[i]].questionText;
+			subtitle += structure.questions[arrayObjectIndexOf(structure.questions, question[i], "orderId")].questionText;
 			subtitle += "<br/>"
 		}
-		optionHandler.updateOption(optionHandler.size-1,"xlabel",(structure.questions[question[0]].questionText).trunc(25))
-		optionHandler.updateOption(optionHandler.size-1,"ylabel",(structure.questions[question[1]].questionText).trunc(25))
+		optionHandler.updateOption(optionHandler.size-1,"xlabel",(structure.questions[arrayObjectIndexOf(structure.questions, question[0], "orderId")].questionText).trunc(25))
+		optionHandler.updateOption(optionHandler.size-1,"ylabel",(structure.questions[arrayObjectIndexOf(structure.questions, question[1], "orderId")].questionText).trunc(25))
 	}
 	console.log('D');
 	matrix = transformation(matrix, options.transformation);
