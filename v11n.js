@@ -6431,9 +6431,15 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		console.log(question)
 		console.log(structure.questions)
 		structure.questions.forEach(function(d){
+			//console.log(structure.questions[0])
+			console.log(d.orderId);
+			console.log(question[0]-1);
+			if(question[0]-1 == 0) {
+				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[0].questionText)
+			}
 			if(d.orderId==question[0]-1) {
 				console.log(d.orderId)
-				console.log(structure.questions[d.orderId]);
+				console.log(structure.questions[d.orderId].questionText);
 				optionHandler.updateOption(optionHandler.size-1,"title",structure.questions[d.orderId].questionText)
 			}
 		});
@@ -6513,7 +6519,7 @@ visualizeChart : function(ref,structure,data,frequency,question,chart,container,
 		var matrix;
 		console.log('ID requested: '+id)
 		for (var i = 0; i < frequency.pollResQuestions.length; i++) {
-			if(frequency.pollResQuestions[i].questionOrderId == id+1){
+			if(frequency.pollResQuestions[i].questionOrderId == id){
 				structure.questions.forEach(function(d){
 					if(id==d.orderId){
 						matrix = flashpoll.generateSingleMatrix(d,frequency.pollResQuestions[i].pollResultAnswers);
